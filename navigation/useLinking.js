@@ -14,6 +14,13 @@ export default function(containerRef) {
           Profile: 'Profile'
         },
       },
+      Auth: {
+          path: 'auth',
+          screens: {
+              Login: 'Login',
+              Register: 'Register'          
+          }
+      }
     },
   });
 }
