@@ -16,6 +16,8 @@ export default class HomeScreen extends React.Component {
         return (
             <View style={styles.container}>
                 <Text>Hi {this.state.displayName}</Text>
+                <Text>HomeScreen</Text>
+
                 {/* <SafeAreaView style={styles.container}>
                     <ScrollView>
                       Add card item with user news feed.
@@ -24,7 +26,6 @@ export default class HomeScreen extends React.Component {
                     <Text style={styles.buttonText}>Log Out</Text>
                 </TouchableOpacity>
                 </SafeAreaView> */}
-
             </View>
         )
     }

@@ -1,6 +1,22 @@
 import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, ActivityIndicator } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, ActivityIndicator, Alert } from 'react-native'
 import * as firebase from 'firebase'
+// import fbKey from '../API/Fire'
+import config from '../config'
+
+// var firebaseConfig = {
+//     apiKey: "AIzaSyA_Qq01jVGZsKkUapBqY69JDtMGaD5RwRE",
+//     authDomain: "industryinsight-42a3b.firebaseapp.com",
+//     databaseURL: "https://industryinsight-42a3b.firebaseio.com",
+//     projectId: "industryinsight-42a3b",
+//     storageBucket: "industryinsight-42a3b.appspot.com",
+//     messagingSenderId: "488958617767",
+//     appId: "1:488958617767:web:64a0ef004e66b09d735382",
+//     measurementId: "G-46RE2FLM3H"
+// };
+if(!firebase.app.length) {
+    firebase.initializeApp(config.firebaseConfig);
+}
 
 export default class RegisterScreen extends React.Component {
     constructor(props) {

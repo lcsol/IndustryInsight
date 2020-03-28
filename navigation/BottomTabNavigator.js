@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Alert } from 'react-native';
+import { Button, StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
@@ -7,6 +7,7 @@ import ChannelScreen from '../screens/ChannelScreen';
 import MessengerScreen from '../screens/MessengerScreen';
 import LinksScreen from '../screens/LinksScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import PostScreen from '../screens/PostScreen';
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Home';
@@ -17,7 +18,7 @@ export default function BottomTabNavigator({ navigation, route }) {
   // https://reactnavigation.org/docs/en/screen-options-resolution.html
   navigation.setOptions({
       headerTitle: getHeaderTitle(route),
-      headerRight: getRightComp(route),
+      headerRight: getRightComp(navigation, route),
    });
 
   return (
@@ -74,17 +75,32 @@ function getHeaderTitle(route) {
   }
 }
 
-function getRightComp(route) {
+function getRightComp(navigation, route) {
   const routeName = route.state?.routes[route.state.index]?.name ?? INITIAL_ROUTE_NAME;
   switch (routeName) {
     case 'Home':
       return () => (
               <Button
                 // onPress should take to another page
-                onPress={() => alert('This is a button!')}
+                onPress={() => navigation.navigate('PostScreen')
+                }
                 title="+"
-                color="#00cc00"
+                style={styles.button}
               />
           );
   }
 }
+
+
+const styles = StyleSheet.create({
+
+  button: {
+      backgroundColor: '#2980b9',
+      paddingHorizontal: 30,
+      marginBottom: 100,
+      marginHorizontal: 40,
+      fontSize: 30,
+      alignItems: 'center',
+      justifyContent: 'center'
+  }
+})

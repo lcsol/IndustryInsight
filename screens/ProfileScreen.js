@@ -1,27 +1,32 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Button } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Text, SafeAreaView, StyleSheet, Button } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
-import { RectButton, ScrollView } from 'react-native-gesture-handler';
+import * as firebase from 'firebase';
+import fbKey from '../API/Fire'
 
-import firebase from 'firebase';
-
+if (!firebase.app.length) {
+  firebase.initializeApp(fbKey);
+}
 
 function ProfileScreen({ navigation }) {
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-      <Text></Text>
-      <Button title="Logout" onPress={() => 
-        firebase.auth().signOut().then(function() {
-          // Sign-out successful.
-          console.log('logging out')
-          navigation.popToTop();
-        }).catch(function() {
-          // An error happened.
-          console.log("Couldn't log out!")
-        })
-        }/>
-    </ScrollView>
+    <SafeAreaView style={styles.container}>
+
+      <ScrollView contentContainerStyle={styles.contentContainer}>
+        <Text>Logout</Text>
+        <Button title="Logout" onPress={() =>
+          firebase.auth().signOut().then(function () {
+            // Sign-out successful.
+            console.log('logging out')
+            navigation.popToTop();
+          }).catch(function () {
+            // An error happened.
+            console.log("Couldn't log out!")
+          })
+        } />
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
