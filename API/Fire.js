@@ -1,71 +1,105 @@
-// import cloudFirebase from '../config'
-// firebase.initializeApp(firebaseConfig);
-// firebase.analytics();
+import config from '../config';
+import firebase from 'firebase';
+require('firebase/firestore');
 
+class Fire {
+  constructor() {
+    firebase.initializeApp(config.firebaseConfig);
+  }
 
-// //   // Initialize Firebase
-// //   firebase.initializeApp(firebaseConfig);
-// //   firebase.analytics();
+  addPost = async ({ text, localUri }) => {
+    const remoteUri = await this.uploadPhotoAsync(
+      localUri,
+      `photos/${this.uid}/${Date.now()}`
+    );
 
-// var firebaseKey = {
-//     apiKey: "AIzaSyA_Qq01jVGZsKkUapBqY69JDtMGaD5RwRE",
-//     authDomain: "industryinsight-42a3b.firebaseapp.com",
-//     databaseURL: "https://industryinsight-42a3b.firebaseio.com",
-//     projectId: "industryinsight-42a3b",
-//     storageBucket: "industryinsight-42a3b.appspot.com",
-//     messagingSenderId: "488958617767",
-//     appId: "1:488958617767:web:64a0ef004e66b09d735382",
-//     measurementId: "G-46RE2FLM3H"
-// };
+    return new Promise((res, rej) => {
+      this.firestore
+        .collection('posts')
+        .add({
+          text,
+          uid: this.uid,
+          timestamp: this.timestamp,
+          image: remoteUri
+        })
+        .then(ref => {
+          res(ref);
+        })
+        .catch(error => {
+          rej(error);
+        });
+    });
+  };
 
-// class Fire {
-//     constructor() {
-//         if (!firebase.app.length) {
-//             firebase.initializeApp(firebaseConfig)
-//         }
-//     }
-// }
+  uploadPhotoAsync = async (uri, filename) => {
+    return new Promise(async (res, rej) => {
+      const response = await fetch(uri);
+      const file = await response.blob();
 
+      let upload = firebase
+        .storage()
+        .ref(filename)
+        .put(file);
 
-// class Fire {
-//     constructor() {
-//         if (!firebase.apps.length) {
-//             firebase.initializeApp(firebaseKey);
-//         }
-//     }
+      upload.on(
+        'state_changed',
+        snapshot => {},
+        err => {
+          rej(err);
+        },
+        async () => {
+          const url = await upload.snapshot.ref.getDownloadURL();
+          res(url);
+        }
+      );
+    });
+  };
 
-//     addPost = async ({ text }) => {
-//         return new Promise((res, rej) => {
-//             this.firestore
-//                 .collection("posts")
-//                 .add({
-//                     text,
-//                     uid: this.uid,
-//                     timestamp: this.timestamp
-//                 })
-//                 .then(ref => {
-//                     res(ref)
-//                 })
-//                 .catch(error => {
-//                     rej(error)
-//                 });
-//         });
-//     };
+  // createUser = async user => {
+  //   let remoteUri = null;
+  //
+  //   try {
+  //     await firebase
+  //       .auth()
+  //       .createUserWithEmailAndPassword(user.email, user.password);
+  //
+  //     let db = this.firestore.collection('users').doc(this.uid);
+  //
+  //     db.set({
+  //       name: user.name,
+  //       email: user.email,
+  //       avatar: null
+  //     });
+  //
+  //     if (user.avatar) {
+  //       remoteUri = await this.uploadPhotoAsync(
+  //         user.avatar,
+  //         `avatars/${this.uid}`
+  //       );
+  //
+  //       db.set({ avatar: remoteUri }, { merge: true });
+  //     }
+  //   } catch (error) {
+  //     alert('Error: ', error);
+  //   }
+  // };
 
-//     get firestore() {
-//         return firebase.firestore()
-//     }
+  signOut = () => {
+    firebase.auth().signOut();
+  };
 
-//     get uid() {
-//         return (firebase.auth().currentUser || {}).uid
-//     }
+  get firestore() {
+    return firebase.firestore();
+  }
 
-//     get timestamp() {
-//         return Date.now()
-//     }
+  get uid() {
+    return (firebase.auth().currentUser || {}).uid;
+  }
 
-// }
+  get timestamp() {
+    return Date.now();
+  }
+}
 
-// Fire.shared = new Fire();
-// export default Fire;
-
+Fire.shared = new Fire();
+export default Fire;
