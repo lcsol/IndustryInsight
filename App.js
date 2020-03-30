@@ -25,6 +25,8 @@ export default function App(props) {
   const { getInitialState } = useLinking(containerRef);
   if (!firebase.app.length) {
     firebase.initializeApp(config.firebaseConfig);
+    const db = firebase.firestore();
+    db.settings({timestampsInSnapshots: true});
   }
   // Load any resources or data that we need prior to rendering the app
   React.useEffect(() => {
