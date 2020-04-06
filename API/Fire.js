@@ -55,6 +55,24 @@ class Fire {
     });
   };
 
+  // getPosts = async (postRetreived) => {
+  //   var posts = []
+  //   var snapshot = await firebase.firestore().collection('posts').get()
+  //   snapshot.forEach((doc) => {
+  //     // posts.push(doc.data())
+  //     const { cur_image, cur_text, cur_timestamp, cur_uid  } = doc.data();
+  //         posts.push({
+  //           id: doc.id,
+  //           name: 'Joe McKay',
+  //           text: cur_text,
+  //           timestamp: cur_timestamp,
+  //           avatar: require('../assets/tempAvatar.jpg'),
+  //           image: cur_image
+  //         });
+  //   })
+  //   postRetreived(posts)
+  // }
+
   // createUser = async user => {
   //   let remoteUri = null;
   //
