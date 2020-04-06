@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView, FlatList, ActivityIndicator, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as firebase from 'firebase'
-// import { List, ListItem, Button, Icon } from 'react-native-elements';
 
 export default class HomeScreen extends React.Component {
     constructor(props) {
@@ -10,29 +9,28 @@ export default class HomeScreen extends React.Component {
         this.ref = firebase.firestore().collection('posts');
         this.unsubscribe = null;
         this.state = {
-        //   isLoading: true,
+          loading: true,
           posts: []
         };
-      }
-      onCollectionUpdate = (querySnapshot) => {
+    }
+    onCollectionUpdate = (querySnapshot) => {
         let cur = [];
         querySnapshot.forEach((doc) => {
-        //   const { cur_image, cur_text, cur_timestamp, cur_uid  } = doc.data();
-          cur.push({
-            id: doc.id,
-            name: 'Joe Green',
-            text: doc.data().text,
-            timestamp: doc.data().timestamp,
-            avatar: require('../assets/tempAvatar.jpg'),
-            // image: doc.data().image
-          });
+            cur.push({
+                id: doc.id,
+                name: 'Joe Green',
+                text: doc.data().text,
+                timestamp: doc.data().timestamp,
+                avatar: require('../assets/tempAvatar.jpg'),
+                // image: doc.data().image
+            });            
         });
         this.setState({
-          posts: cur
-        //   isLoading: false,
-       });
-      }
-    
+            loading: false,
+            posts: cur
+        });
+    }
+
     componentDidMount() {
         this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
     }

@@ -7,11 +7,35 @@ class Fire {
     firebase.initializeApp(config.firebaseConfig);
   }
 
-  addPost = async ({ text, localUri }) => {
-    const remoteUri = await this.uploadPhotoAsync(
-      localUri,
-      `photos/${this.uid}/${Date.now()}`
-    );
+  // addPost = async ({ text, localUri }) => {
+  //   const remoteUri = await this.uploadPhotoAsync(
+  //     localUri,
+  //     `photos/${this.uid}/${Date.now()}`
+  //   );
+
+  //   return new Promise((res, rej) => {
+  //     this.firestore
+  //       .collection('posts')
+  //       .add({
+  //         text,
+  //         uid: this.uid,
+  //         timestamp: this.timestamp,
+  //         image: remoteUri
+  //       })
+  //       .then(ref => {
+  //         res(ref);
+  //       })
+  //       .catch(error => {
+  //         rej(error);
+  //       });
+  //   });
+  // };
+
+  addPost = async ({ text }) => {
+    // const remoteUri = await this.uploadPhotoAsync(
+    //   localUri,
+    //   `photos/${this.uid}/${Date.now()}`
+    // );
 
     return new Promise((res, rej) => {
       this.firestore
@@ -20,7 +44,7 @@ class Fire {
           text,
           uid: this.uid,
           timestamp: this.timestamp,
-          image: remoteUri
+          // image: remoteUri
         })
         .then(ref => {
           res(ref);
@@ -54,24 +78,6 @@ class Fire {
       );
     });
   };
-
-  // getPosts = async (postRetreived) => {
-  //   var posts = []
-  //   var snapshot = await firebase.firestore().collection('posts').get()
-  //   snapshot.forEach((doc) => {
-  //     // posts.push(doc.data())
-  //     const { cur_image, cur_text, cur_timestamp, cur_uid  } = doc.data();
-  //         posts.push({
-  //           id: doc.id,
-  //           name: 'Joe McKay',
-  //           text: cur_text,
-  //           timestamp: cur_timestamp,
-  //           avatar: require('../assets/tempAvatar.jpg'),
-  //           image: cur_image
-  //         });
-  //   })
-  //   postRetreived(posts)
-  // }
 
   // createUser = async user => {
   //   let remoteUri = null;

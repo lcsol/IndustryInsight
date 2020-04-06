@@ -143,19 +143,30 @@ import UserPermissions from '../utilities/UserPermissions';
 
 export default class PostScreen extends React.Component {
   state = {
-    text: '',
-    image: null
+    text: ''
+    // image: ''
   };
 
   componentDidMount() {
     UserPermissions.getCameraPermission();
   }
 
+  // handlePost = () => {
+  //   Fire.shared
+  //     .addPost({ text: this.state.text.trim(), localUri: this.state.image})
+  //     .then(ref => {
+  //       this.setState({ text: '', image: '' });
+  //       this.props.navigation.goBack();
+  //     })
+  //     .catch(error => {
+  //       alert(error);
+  //     });
+  // };
   handlePost = () => {
     Fire.shared
-      .addPost({ text: this.state.text.trim(), localUri: this.state.image })
+      .addPost({ text: this.state.text.trim()})
       .then(ref => {
-        this.setState({ text: '', image: null });
+        this.setState({ text: '' });
         this.props.navigation.goBack();
       })
       .catch(error => {
