@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, StatusBar, StyleSheet, View, SafeAreaView } from 'react-native';
+import { Platform, StatusBar, StyleSheet, InteractionManager } from 'react-native';
 import { SplashScreen } from 'expo';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
@@ -11,11 +11,15 @@ import LoginScreen from './screens/LoginScreen';
 import useLinking from './navigation/useLinking';
 import RegisterScreen from './screens/RegisterScreen';
 import PostScreen from './screens/PostScreen';
+import FacebookScreen from './screens/Companies/facebookScreen'
 import * as firebase from 'firebase'
 import config from './config'
-
-
+import GoogleScreen from './screens/Companies/googleScreen';
+import AmazonScreen from './screens/Companies/amazonScreen';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { decode, encode } from 'base-64'
+
+
 if (Platform.OS !== 'web') {
     global.crypto = require("@firebase/firestore");
     global.crypto.getRandomValues = byteArray => { for (let i = 0; i < byteArray.length; i++) { byteArray[i] = Math.floor(256 * Math.random()); } }
@@ -23,13 +27,10 @@ if (Platform.OS !== 'web') {
     if (!global.atob) { global.atob = decode; }
 }
 
-
-import {InteractionManager} from 'react-native';
-
 const _setTimeout = global.setTimeout;
 const _clearTimeout = global.clearTimeout;
 const MAX_TIMER_DURATION_MS = 60 * 1000;
-if (Platform.OS === 'android') {
+if (Platform.OS === 'ios') {
 // Work around issue `Setting a timer for long time`
 // see: https://github.com/firebase/firebase-js-sdk/issues/97
     const timerFix = {};
@@ -70,7 +71,6 @@ if (Platform.OS === 'android') {
     };
 }
 
-
 const Stack = createStackNavigator();
 
 
@@ -81,8 +81,6 @@ export default function App(props) {
   const { getInitialState } = useLinking(containerRef);
   if (!firebase.app.length) {
     firebase.initializeApp(config.firebaseConfig);
-    // const db = firebase.firestore();
-    // db.settings({timestampsInSnapshots: true});
   }
   // Load any resources or data that we need prior to rendering the app
   React.useEffect(() => {
@@ -114,18 +112,23 @@ export default function App(props) {
   } else {
 
     return (
-      <SafeAreaView style={styles.container}>
-          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <NavigationContainer ref={containerRef} initialState={initialNavigationState}>
-            <Stack.Navigator>
-              <Stack.Screen name="Login" component={LoginScreen} options={{ headerTitle: 'Login' }} />
-              <Stack.Screen name="Register" component={RegisterScreen} options={{ headerLeft: null }} />
-              <Stack.Screen name="Home" component={BottomTabNavigator} options={{ headerLeft: null }} />
-              <Stack.Screen name="PostScreen" component={PostScreen} options={{ headerTitle: 'Request' }} />
+      // <SafeAreaView style={styles.container}>
+      <SafeAreaProvider>
+        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+        <NavigationContainer ref={containerRef} initialState={initialNavigationState} style={styles.container}>
+          <Stack.Navigator>
+            <Stack.Screen name="Login" component={LoginScreen} options={{ headerTitle: 'Login' }} />
+            <Stack.Screen name="Register" component={RegisterScreen} options={{ headerLeft: null }} />
+            <Stack.Screen name="Home" component={BottomTabNavigator} options={{ headerLeft: null }} />
+            <Stack.Screen name="PostScreen" component={PostScreen} options={{ headerTitle: 'Request' }} />
+            <Stack.Screen name="Facebook" component={FacebookScreen} options={{ headerTitle: 'Facebook' }} />
+            <Stack.Screen name="Google" component={GoogleScreen} options={{ headerTitle: 'Google' }} />
+            <Stack.Screen name="Amazon" component={AmazonScreen} options={{ headerTitle: 'Amazon' }} />
 
-            </Stack.Navigator>
-          </NavigationContainer>
-      </SafeAreaView>
+          </Stack.Navigator>
+        </NavigationContainer>
+      </SafeAreaProvider>
+      //  </SafeAreaView>
     );
   }
 }

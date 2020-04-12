@@ -1,3 +1,127 @@
+// import React from 'react';
+// import { View, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
+// import { Card, Text, ListItem, SocialIcon } from 'react-native-elements'
+
+// import * as firebase from 'firebase';
+
+// // Dummy data
+// const users = [
+//     {
+//         name: 'brynn',
+//         avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
+//         subtitle: 'Student',
+//         request: 'Resume Review'
+//     },
+//     {
+//         name: 'Amy Farha',
+//         avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
+//         subtitle: 'Student',
+//         request: 'Amazon interview practice'
+//     },
+//     {
+//         name: 'Chris Jackson',
+//         avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+//         subtitle: 'Student',
+//         request: 'Facebook interview practice'
+//     },
+// ]
+
+// export default class HomeScreen extends React.Component {
+//     state = {
+//         email: '',
+//         displayName: ''
+//     }
+//     componentDidMount() {
+//         const { email, displayName } = firebase.auth().currentUser
+//         this.setState({ email, displayName })
+//     }
+
+
+//     render() {
+//         return (
+//             <SafeAreaView style={styles.container}>
+//                 <View style={styles.header}>
+//                     <Text h3>Alerts</Text>
+//                 </View>
+//                 <View style={styles.alertContent}>
+//                     <ScrollView style={styles.alertContent}>
+//                         {
+//                             users.map((l, i) => (
+//                                 <Card containerStyle={{ padding: 0 }}>
+//                                     <ListItem
+//                                         key={i}
+//                                         leftAvatar={{ source: { uri: l.avatar } }}
+//                                         title={l.name}
+//                                         subtitle={l.request}
+//                                         bottomDivider
+//                                     />
+//                                 </Card>
+//                             ))
+//                         }
+//                     </ScrollView>
+//                 </View>
+//                 <View style={styles.header}>
+//                     <Text h3>Channels you may like ...</Text>
+//                 </View>
+//                 <View style={styles.channelIcon}>
+//                     <SocialIcon
+//                         type='facebook'
+//                     />
+//                     <SocialIcon
+//                         type='google'
+//                     />
+//                     <SocialIcon
+//                         type='twitch'
+//                     />
+//                     <SocialIcon
+//                         type='medium'
+//                     />
+//                 </View>
+
+//             </SafeAreaView>
+//         )
+//     }
+// }
+
+// const styles = StyleSheet.create({
+//     container: {
+//         flex: 1,
+//         backgroundColor: '#2a7886',
+//         // justifyContent: 'center',
+//         // alignItems: 'center'
+//     },
+//     header: {
+//         padding: 10,
+//         marginTop: 10,
+//         alignItems: 'center',
+//         borderWidth: 2,
+
+//     },
+//     alertContent: {
+//         marginBottom: 0,
+//     },
+//     channelIcon: {
+//         flexDirection: 'row'
+//     }
+//     // button: {
+//     //     backgroundColor: '#2980b9',
+//     //     paddingVertical: 15,
+//     //     marginBottom: 100,
+//     //     marginHorizontal: 30,
+//     //     borderRadius: 4,
+//     //     width: 200,
+//     //     height: 50,
+//     //     alignItems: 'center',
+//     //     justifyContent: 'center'
+//     // },
+//     // buttonText: {
+//     //     textAlign: 'center',
+//     //     color: '#FFFFFF',
+//     //     fontWeight: '700'
+//     // }
+// })
+
+
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, FlatList, ActivityIndicator, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -21,7 +145,7 @@ export default class HomeScreen extends React.Component {
                 name: 'Joe Green',
                 text: doc.data().text,
                 timestamp: doc.data().timestamp,
-                avatar: require('../assets/tempAvatar.jpg'),
+                avatar: require('../assets/images/robot-dev.png'),
                 // image: doc.data().image
             });            
         });
@@ -48,14 +172,8 @@ export default class HomeScreen extends React.Component {
               alignItems: 'center'
             }}
           >
-            <View>
-              {/* <Text style={styles.name}>{post.name}</Text> */}
-              {/* <Text style={styles.timestamp}>
-                {moment(post.timestamp).fromNow()}
-              </Text> */}
-            </View>
+      
 
-            <Ionicons name='ios-more' size={24} color='#73788b' />
           </View>
 
           <Text style={styles.post}>{post.text}</Text>
@@ -67,12 +185,6 @@ export default class HomeScreen extends React.Component {
           /> */}
 
           <View style={{ flexDirection: 'row' }}>
-            <Ionicons
-              name='ios-heart-empty'
-              size={24}
-              color='#73788b'
-              style={{ marginRight: 16 }}
-            />
             <Ionicons name='ios-chatboxes' size={24} color='#73788b' />
           </View>
         </View>
@@ -83,10 +195,6 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.headerTitle}>Feed</Text>
-        </View>
-
         <FlatList
           style={styles.feed}
           data={this.state.posts}
@@ -102,7 +210,7 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#efecf4'
+    backgroundColor: '#413c69'
   },
   header: {
     paddingTop: 64,

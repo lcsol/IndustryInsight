@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
@@ -8,6 +8,7 @@ import MessengerScreen from '../screens/MessengerScreen';
 import LinksScreen from '../screens/LinksScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import PostScreen from '../screens/PostScreen';
+import { Button, Icon } from 'react-native-elements';
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Home';
@@ -17,9 +18,9 @@ export default function BottomTabNavigator({ navigation, route }) {
   // currently active tab. Learn more in the documentation:
   // https://reactnavigation.org/docs/en/screen-options-resolution.html
   navigation.setOptions({
-      headerTitle: getHeaderTitle(route),
-      headerRight: getRightComp(navigation, route),
-   });
+    headerTitle: getHeaderTitle(route),
+    headerRight: getRightComp(navigation, route),
+  });
 
   return (
     <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
@@ -47,7 +48,7 @@ export default function BottomTabNavigator({ navigation, route }) {
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-mail" />,
         }}
       />
-       <BottomTab.Screen
+      <BottomTab.Screen
         name="Profile"
         component={ProfileScreen}
         options={{
@@ -80,14 +81,23 @@ function getRightComp(navigation, route) {
   switch (routeName) {
     case 'Home':
       return () => (
-              <Button
-                // onPress should take to another page
-                onPress={() => navigation.navigate('PostScreen')
-                }
-                title="+"
-                style={styles.button}
-              />
-          );
+        // <Button
+        //   // onPress should take to another page
+        //   onPress={() => navigation.navigate('PostScreen')
+        //   }
+        //   title="+"
+        //   // style={styles.button}
+        // />
+        <Button
+          icon={
+            <Icon
+              name="add"
+              color="white"
+            />
+          }
+          onPress={() => navigation.navigate('PostScreen')}
+        />
+      );
   }
 }
 
@@ -95,12 +105,12 @@ function getRightComp(navigation, route) {
 const styles = StyleSheet.create({
 
   button: {
-      backgroundColor: '#2980b9',
-      paddingHorizontal: 30,
-      marginBottom: 100,
-      marginHorizontal: 40,
-      fontSize: 30,
-      alignItems: 'center',
-      justifyContent: 'center'
+    backgroundColor: '#2980b9',
+    paddingHorizontal: 30,
+    marginBottom: 100,
+    marginHorizontal: 40,
+    fontSize: 30,
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 })

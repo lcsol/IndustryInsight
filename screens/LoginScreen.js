@@ -31,7 +31,7 @@ export default class LoginScreen extends React.Component {
 
     renderButtonOrLoading() {
         if (this.state.loading) {
-            return <ActivityIndicator size="large" color="#0000ff" />
+            return <ActivityIndicator size="large" color="#2a7886" />
         } else if (this.state.error === 'Authentication failed!') {
             Alert.alert(
                 'Login Failure',
@@ -56,8 +56,8 @@ export default class LoginScreen extends React.Component {
     }
 
     render() {
-        return (
-            <KeyboardAvoidingView behavior="padding" style={styles.container}>
+        return (      
+          <KeyboardAvoidingView behavior="padding" style={styles.container}>
                 <View style={styles.container}>
                     {/* <Text style={styles.greeting}>Welcom Back!</Text> */}
 
@@ -69,9 +69,8 @@ export default class LoginScreen extends React.Component {
                 <View style={styles.logoContainer}>
                     <Image
                         style={styles.logo}
-                        source={require('../images/loginLogo.jpg')}
+                        source={require('../images/IILogo.png')}
                     />
-                    <Text style={styles.logoTitle}>Industry Insight</Text>
                 </View>
                 <View style={styles.formContainer}>
                     <View style={styles.insideFormcontainer}>
@@ -102,10 +101,19 @@ export default class LoginScreen extends React.Component {
     }
 }
 
+
 const styles = StyleSheet.create({
+    areaView: {
+        flex: 1,
+    },
     container: {
         flex: 1,
-        backgroundColor: '#3498db'
+        // backgroundColor: '#3498db'
+        backgroundColor: '#413c69'
+    },
+    formContainer: {
+        // borderWidth: 2,
+        flexGrow: 1,
     },
     greeting: {
         marginTop: 30,
@@ -131,8 +139,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     logo: {
-        width: 100,
-        height: 100
+        width: 200,
+        height: 200
     },
     logoTitle: {
         color: '#FFF',
@@ -141,7 +149,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
     buttonContainer: {
-        backgroundColor: '#2980b9',
+        backgroundColor: '#2a7886',
         paddingVertical: 15,
         marginTop: 20,
         marginHorizontal: 30,
@@ -163,7 +171,7 @@ const styles = StyleSheet.create({
     },
     insideFormcontainer: {
         padding: 30,
-        paddingBottom: 150
+        paddingBottom: 100,
     },
     input: {
         height: 40,

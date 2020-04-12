@@ -1,10 +1,8 @@
 import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, ActivityIndicator, Alert } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, ActivityIndicator, Alert, Image } from 'react-native'
 import * as firebase from 'firebase'
-// import fbKey from '../API/Fire'
 import config from '../config'
-
-if(!firebase.app.length) {
+if (!firebase.app.length) {
     firebase.initializeApp(config.firebaseConfig);
 }
 
@@ -29,12 +27,12 @@ export default class RegisterScreen extends React.Component {
             .catch(() => {
                 this.setState({ name: name, email: email, password: password, error: 'Authentication failed!', loading: false });
             })
-    };
+    }
 
     // method to display either buttons or activity indicator
     renderButtonOrLoading() {
         if (this.state.loading) {
-            return <ActivityIndicator size="large" color="#0000ff" />
+            return <ActivityIndicator size="large" color="#2a7886" />
         } else if (this.state.error === 'Authentication failed!') {
             this.state.error = '';
             this.state.loading = false;
@@ -65,7 +63,11 @@ export default class RegisterScreen extends React.Component {
                 <View style={styles.errorMessage}>
                     {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
                 </View>
-                <Text style={styles.logoTitle}>Industry Insight</Text>
+                <Image
+                    style={styles.logo}
+                    source={require('../images/IILogo.png')}
+                />
+                {/* <Text style={styles.logoTitle}>Industry Insight</Text> */}
                 <TextInput
                     style={styles.input}
                     placeholder='Name'
@@ -114,12 +116,12 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: '#3498db',
+        backgroundColor: '#413c69',
         justifyContent: 'center',
         alignItems: 'center'
     },
     buttonContainer: {
-        backgroundColor: '#2980b9',
+        backgroundColor: '#2a7886',
         paddingVertical: 15,
         width: 300,
         marginTop: 20,
@@ -133,6 +135,10 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#FFFFFF',
         fontWeight: '700'
+    },
+    logo: {
+        width: 200,
+        height: 200,
     },
     logoTitle: {
         color: '#FFF',
