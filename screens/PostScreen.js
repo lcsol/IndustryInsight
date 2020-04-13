@@ -1,132 +1,13 @@
-// import React from 'react'
-// import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, TextInput, TouchableOpacityBase, Button } from 'react-native'
-// import fbKey from '../API/Fire'
-// // import { addPost } from '../API/PostServiceAPI'
-// import * as firebase from 'firebase'
-// import 'firebase/firestore';
-// import config from '../config'
-
-// if (!firebase.app.length) {
-//     firebase.initializeApp(config.firebaseConfig)
-// }
-
-// // const docRef = firebase.firestore().collection('posts')
-// export default class PostScreen extends React.Component {
-//     constructor(props) {
-//         super(props);
-//         this.state = ({
-//             text: '',
-//             loading: false
-//         });
-//         // this.docRef = firebase.firestore.collection('posts');
-//         this.userId = firebase.auth().currentUser.uid;
-
-//     }
-//     // addPost = async ({ text }) => {
-//     //         return new Promise((res, rej) => {
-//     //             this.firestore
-//     //                 .collection("posts")
-//     //                 .add({
-//     //                     text,
-//     //                     uid: this.uid,
-//     //                     timestamp: this.timestamp
-//     //                 })
-//     //                 .then(ref => {
-//     //                     res(ref)
-//     //                 })
-//     //                 .catch(error => {
-//     //                     rej(error)
-//     //                 });
-//     //         });
-//     //     };
-
-
-//     handlePost = () => {
-//         const db = firebase.firestore();
-//         return new Promise((res, rej) => {
-//             console.log("before");
-//             // firebase.firestore().collection('posts').add({
-//             //     request: this.state.text,
-//             //     timestamp: firebase.firestore.FieldValue.serverTimestamp()
-
-//             // }).then(() => {console.log("success");})
-//             // .catch((error) => { 
-//             //     console.log(error);
-//             //     console.log("failed");
-//             // })
-//             // ;
-
-//             db.collection("posts").doc("").set({
-//                 request: this.state.text,
-//                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
-
-//             })
-//             console.log("after");
-//         })
-//     }
-
-
-
-
-
-//     render() {
-//         return (
-//             <SafeAreaView>
-//                 <View style={styles.container}>
-//                     <View style={styles.inputContainer}>
-//                         <TextInput
-//                             autoFocus={true}
-//                             multiline={true}
-//                             numberOfLines={4}
-//                             placeholder="What's on your mind?"
-//                             style={{ flex: 1, backgroundColor: 'white' }}
-//                             onChangeText={text => this.setState({ text })}
-//                             value={this.state.text}
-//                         />
-//                     </View>
-//                     <View style={styles.footer}>
-//                         <TouchableOpacity onPress={this.handlePost.bind(this)}>
-//                             <Text style={{ height: 100, fontWeight: "500", color: 'blue' }}>Post</Text>
-//                         </TouchableOpacity>
-//                     </View>
-//                 </View>
-//             </SafeAreaView>
-//         )
-//     }
-// }
-
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         alignItems: 'center'
-
-//     },
-//     inputContainer: {
-//         margin: 5,
-//         flexDirection: 'row',
-//         height: 300
-//     },
-//     footer: {
-//         flexDirection: 'row',
-//         justifyContent: "space-between",
-//         paddingHorizontal: 32,
-//         paddingVertical: 12
-//     }
-// })
-
-
-
-
 import React from 'react';
 import {
     View,
     Text,
     StyleSheet,
     TouchableOpacity,
-    SafeAreaView,
     TextInput,
     Image
 } from 'react-native';
+import { Avatar, Button } from 'react-native-elements'
 import { Ionicons } from '@expo/vector-icons';
 import Fire from '../API/Fire';
 import * as ImagePicker from 'expo-image-picker';
@@ -134,12 +15,28 @@ import UserPermissions from '../utilities/UserPermissions';
 
 export default class PostScreen extends React.Component {
     state = {
-        text: ''
+        user: {},
+        text: '',
         // image: ''
     };
+    
+    data = null;
 
     componentDidMount() {
         UserPermissions.getCameraPermission();
+        const user = this.props.uid || Fire.shared.uid;
+
+        this.data = Fire.shared.firestore
+			.collection('users')
+			.doc(user)
+			.onSnapshot(doc => {
+				this.setState({ user: doc.data() })
+
+			});
+    }
+
+    componentWillUnmount() {
+        this.data();
     }
 
     // handlePost = () => {
@@ -153,6 +50,7 @@ export default class PostScreen extends React.Component {
     //       alert(error);
     //     });
     // };
+
     handlePost = () => {
         Fire.shared
             .addPost({ text: this.state.text.trim() })
@@ -165,25 +63,32 @@ export default class PostScreen extends React.Component {
             });
     };
 
-    pickImage = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
-            aspect: [4, 3]
-        });
+    // pickImage = async () => {
+    //     let result = await ImagePicker.launchImageLibraryAsync({
+    //         mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    //         allowsEditing: true,
+    //         aspect: [4, 3]
+    //     });
 
-        if (!result.cancelled) {
-            this.setState({ image: result.uri });
-        }
-    };
+    //     if (!result.cancelled) {
+    //         this.setState({ image: result.uri });
+    //     }
+    // };
+
 
     render() {
         return (
-            <SafeAreaView style={styles.container}>
+            <View style={styles.container}>
                 <View style={styles.inputContainer}>
-                    <Image
-                        source={require('../assets/images/robot-dev.png')}
+                    <Avatar
+                        size="medium"
+                        rounded
                         style={styles.avatar}
+                        source={
+                            this.state.user.avatar
+                                ? { uri: this.state.user.avatar }
+                                : require("../assets/images/robot-dev.png")
+                        }
                     />
                     <TextInput
                         autoFocus={true}
@@ -195,21 +100,23 @@ export default class PostScreen extends React.Component {
                         value={this.state.text}
                     />
                 </View>
-                <TouchableOpacity style={styles.photo} onPress={this.pickImage}>
+                {/* attching picture with post */}
+                {/* <TouchableOpacity style={styles.photo} onPress={this.pickImage}>
                     <Ionicons name='md-camera' size={32} color='#D8D9DB' />
-                </TouchableOpacity>
-                <View style={{ marginHorizontal: 32, marginTop: 32, height: 150 }}>
+                </TouchableOpacity> */}
+                {/* <View style={{ marginHorizontal: 32, marginTop: 32, height: 150 }}>
                     <Image
                         source={{ uri: this.state.image }}
                         style={{ width: '100%', height: '100%' }}
                     />
-                </View>
+                </View> */}
                 <View style={styles.footer}>
-                    <TouchableOpacity onPress={this.handlePost.bind(this)}>
+                    {/* <TouchableOpacity onPress={this.handlePost.bind(this)}>
                         <Text style={{ height: 100, fontWeight: "500", color: 'blue' }}>Post</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
+                    <Button title="Post" onPress={this.handlePost.bind(this)}/>
                 </View>
-            </SafeAreaView>
+            </View>
         );
     }
 }
@@ -228,10 +135,10 @@ const styles = StyleSheet.create({
         borderBottomColor: '#D8D9DB'
     },
     footer: {
-        flexDirection: 'row',
-        justifyContent: "center",
-        paddingHorizontal: 32,
-        paddingVertical: 12
+        // flexDirection: 'row',
+        // justifyContent: "center",
+        paddingHorizontal: 175,
+        // paddingVertical: 0
     },
     inputContainer: {
         margin: 10,
@@ -243,7 +150,9 @@ const styles = StyleSheet.create({
         width: 48,
         height: 48,
         borderRadius: 24,
-        marginRight: 16
+        marginRight: 15,
+        marginLeft: 5,
+        marginTop: 5
     },
     photo: {
         alignItems: 'flex-end',

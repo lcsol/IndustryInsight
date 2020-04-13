@@ -9,34 +9,10 @@ class Fire {
         }
     }
 
-    // addPost = async ({ text, localUri }) => {
-    //   const remoteUri = await this.uploadPhotoAsync(
-    //     localUri,
-    //     `photos/${this.uid}/${Date.now()}`
-    //   );
-
-    //   return new Promise((res, rej) => {
-    //     this.firestore
-    //       .collection('posts')
-    //       .add({
-    //         text,
-    //         uid: this.uid,
-    //         timestamp: this.timestamp,
-    //         image: remoteUri
-    //       })
-    //       .then(ref => {
-    //         res(ref);
-    //       })
-    //       .catch(error => {
-    //         rej(error);
-    //       });
-    //   });
-    // };
-
     addPost = async ({ text }) => {
         // const remoteUri = await this.uploadPhotoAsync(
-        //   localUri,
-        //   `photos/${this.uid}/${Date.now()}`
+        //     localUri,
+        //     `photos/${this.uid}/${Date.now()}`
         // );
 
         return new Promise((res, rej) => {
@@ -81,37 +57,82 @@ class Fire {
         });
     };
 
-    // createUser = async user => {
-    //   let remoteUri = null;
-    //
-    //   try {
-    //     await firebase
-    //       .auth()
-    //       .createUserWithEmailAndPassword(user.email, user.password);
-    //
-    //     let db = this.firestore.collection('users').doc(this.uid);
-    //
-    //     db.set({
-    //       name: user.name,
-    //       email: user.email,
-    //       avatar: null
-    //     });
-    //
-    //     if (user.avatar) {
-    //       remoteUri = await this.uploadPhotoAsync(
-    //         user.avatar,
-    //         `avatars/${this.uid}`
-    //       );
-    //
-    //       db.set({ avatar: remoteUri }, { merge: true });
+    createUser = async user => {
+        let remoteUri = null;
+
+        try {
+            await firebase
+                .auth()
+                .createUserWithEmailAndPassword(user.email, user.password);
+
+            let db = this.firestore.collection('users').doc(this.uid);
+
+            db.set({
+                name: user.name,
+                email: user.email,
+                avatar: null
+            }); 
+
+            if (user.avatar) {
+                remoteUri = await this.uploadPhotoAsync(
+                    user.avatar,
+                    `avatars/${this.uid}`
+                );
+
+                db.set({ avatar: remoteUri }, { merge: true });
+            }
+            console.log("successful sign up");
+        } catch (error) {
+            alert(error);
+        }
+    };
+
+    updateProfilePicture = async (remoteUri) => {
+        try {
+            let db = this.firestore.collection('users').doc(this.uid);
+            db.set({ avatar: remoteUri}, {merge: true});
+            console.log("updated profile picture (Fire)");
+
+        } catch (error) {
+            alert(error);
+        }
+
+    };
+
+    getUserData = () => {
+        let db = this.firestore.collection('users').doc(this.uid);
+        db.get().then((doc) => {
+            if (doc.exists) {
+                console.log(doc.data());
+                return doc.data()
+            }
+            console.log("doc doens't exists!");
+
+        }).catch((error) => {
+            console.log(error);
+        });
+    };
+
+
+    // docRef.get().then(function(doc) {
+    //     if (doc.exists) {
+    //         console.log("Document data:", doc.data());
+    //     } else {
+    //         // doc.data() will be undefined in this case
+    //         console.log("No such document!");
     //     }
-    //   } catch (error) {
-    //     alert('Error: ', error);
-    //   }
-    // };
+    // }).catch(function(error) {
+    //     console.log("Error getting document:", error);
+    // });
+    // test.firestore.js
+    
 
     signOut = () => {
-        firebase.auth().signOut();
+        try {
+            return firebase.auth().signOut();
+        } catch (error) {
+            console.log("error:", error);
+        }
     };
 
     get firestore() {
