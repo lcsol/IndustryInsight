@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, FlatList, ActivityIndicator, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, FlatList, TouchableWithoutFeedback, ActivityIndicator, Image } from 'react-native';
 import { Avatar } from 'react-native-elements'
 import { Ionicons } from '@expo/vector-icons';
 import * as firebase from 'firebase'
 import Fire from '../API/Fire'
+// import DetailsScreen from '../screens/DetailsScreen';
 
 export default class HomeScreen extends React.Component {
 	constructor(props) {
@@ -57,7 +58,8 @@ export default class HomeScreen extends React.Component {
 
 	renderPost = post => {
 		return (
-			<View style={styles.feedItem}>
+			<TouchableWithoutFeedback onPress={() => {this.props.navigation.navigate('Details')}}>
+				<View style={styles.feedItem}>
 				<Avatar
 					size="medium"
 					rounded
@@ -93,6 +95,8 @@ export default class HomeScreen extends React.Component {
 					</View>
 				</View>
 			</View>
+			</TouchableWithoutFeedback>
+
 		);
 	};
 

@@ -18,6 +18,7 @@ import GoogleScreen from './screens/Companies/googleScreen';
 import AmazonScreen from './screens/Companies/amazonScreen';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { decode, encode } from 'base-64'
+import DetailsScreen from "./screens/DetailsScreen";
 
 
 if (Platform.OS !== 'web') {
@@ -124,6 +125,7 @@ export default function App(props) {
             <Stack.Screen name="Facebook" component={FacebookScreen} options={{ headerTitle: 'Facebook' }} />
             <Stack.Screen name="Google" component={GoogleScreen} options={{ headerTitle: 'Google' }} />
             <Stack.Screen name="Amazon" component={AmazonScreen} options={{ headerTitle: 'Amazon' }} />
+            <Stack.Screen name="Details" component={DetailsScreen} options={{ headerTitle: 'Details' }} />
 
           </Stack.Navigator>
         </NavigationContainer>
