@@ -9,6 +9,7 @@ import LinksScreen from '../screens/LinksScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import PostScreen from '../screens/PostScreen';
 import { Button, Icon } from 'react-native-elements';
+import Fire from '../API/Fire'
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Home';
@@ -20,7 +21,9 @@ export default function BottomTabNavigator({ navigation, route }) {
   navigation.setOptions({
     headerTitle: getHeaderTitle(route),
     headerRight: getRightComp(navigation, route),
+
   });
+
 
   return (
     <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
@@ -81,21 +84,27 @@ function getRightComp(navigation, route) {
   switch (routeName) {
     case 'Home':
       return () => (
-        // <Button
-        //   // onPress should take to another page
-        //   onPress={() => navigation.navigate('PostScreen')
-        //   }
-        //   title="+"
-        //   // style={styles.button}
-        // />
         <Button
+          type="clear"
           icon={
             <Icon
               name="add"
-              color="white"
+              color='#2a7886'
             />
           }
           onPress={() => navigation.navigate('PostScreen')}
+        />
+      );
+    case 'Profile':
+      return () => (
+        <Button
+          type="clear"
+          title="Logout"
+          // onPress={() => navigation.navigate('PostScreen')}
+          onPress={() => {
+            Fire.shared.signOut();
+            navigation.popToTop();
+          }}
         />
       );
   }

@@ -9,15 +9,43 @@ class Fire {
         }
     }
 
-    addPost = async ({ text }) => {
+    addPost = async ({ text, channel }) => {
         // const remoteUri = await this.uploadPhotoAsync(
         //     localUri,
         //     `photos/${this.uid}/${Date.now()}`
         // );
-
+        console.log(channel);
+        var post_collection = null;
         return new Promise((res, rej) => {
+            switch (channel) {
+                case channel === "Amazon":
+                    // code block
+                    post_collection = "amazonPosts";
+                    break;
+                case "Facebook":
+                    // code block
+                    post_collection = "facebookPosts";
+                    break;
+                case "Google":
+                    // code block
+                    post_collection = "googlePosts";
+                    break;
+                case "Microsoft":
+                    post_collection = "microsoftPosts";
+                    break;
+                case "Intel":
+                    post_collection = "intelPosts";
+                    break;
+                case "Apple":
+                    post_collection = "applePosts";
+                    break;
+                default:
+                    post_collection = "globalPosts";
+                    break;
+
+            }
             this.firestore
-                .collection('posts')
+                .collection(post_collection)
                 .add({
                     text,
                     uid: this.uid,
@@ -71,7 +99,7 @@ class Fire {
                 name: user.name,
                 email: user.email,
                 avatar: null
-            }); 
+            });
 
             if (user.avatar) {
                 remoteUri = await this.uploadPhotoAsync(
@@ -90,7 +118,7 @@ class Fire {
     updateProfilePicture = async (remoteUri) => {
         try {
             let db = this.firestore.collection('users').doc(this.uid);
-            db.set({ avatar: remoteUri}, {merge: true});
+            db.set({ avatar: remoteUri }, { merge: true });
             console.log("updated profile picture (Fire)");
 
         } catch (error) {
@@ -125,7 +153,7 @@ class Fire {
     //     console.log("Error getting document:", error);
     // });
     // test.firestore.js
-    
+
 
     signOut = () => {
         try {

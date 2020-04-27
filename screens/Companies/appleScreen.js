@@ -11,10 +11,10 @@ import * as firebase from 'firebase'
 
 
 
-export default class AmazonScreen extends React.Component {
+export default class AppleScreen extends React.Component {
     constructor(props) {
         super(props);
-        this.ref = firebase.firestore().collection('amazonPosts');
+        this.ref = firebase.firestore().collection('applePosts');
         this.unsubscribe = null;
         this.state = {
             user: {},

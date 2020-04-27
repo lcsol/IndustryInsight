@@ -5,20 +5,27 @@ import { Avatar, Text, Button } from 'react-native-elements'
 import Fire from '../API/Fire'
 import UserPermissions from '../utilities/UserPermissions'
 import * as ImagePicker from 'expo-image-picker'
-
+import * as firebase from 'firebase'
+import { FlatList } from 'react-native-gesture-handler';
 
 
 export default class ProfileScreen extends React.Component {
-	state = {
-		user: {}
+	constructor(props) {
+		super(props);
+		this.ref = firebase.firestore().collection('globalPosts');
+		this.unsubscribe = null;
+		this.state = {
+			user: {},
+			loading: true,
+			posts: []
+		};
+	}
 
-	};
 
 	unsubscribe = null;
-
 	componentDidMount() {
+		this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
 		const user = this.props.uid || Fire.shared.uid;
-		// console.log(user);
 
 		this.unsubscribe = Fire.shared.firestore
 			.collection('users')
@@ -27,12 +34,73 @@ export default class ProfileScreen extends React.Component {
 				this.setState({ user: doc.data() })
 
 			});
-
 	}
+
+	// componentDidMount() {
+	// 	const user = this.props.uid || Fire.shared.uid;
+	// 	// console.log(user);
+
+	// 	this.unsubscribe = Fire.shared.firestore
+	// 		.collection('users')
+	// 		.doc(user)
+	// 		.onSnapshot(doc => {
+	// 			this.setState({ user: doc.data() })
+
+	// 		});
+
+	// }
 
 	componentWillUnmount() {
 		this.unsubscribe();
 	}
+	onCollectionUpdate = (querySnapshot) => {
+		let cur = [];
+		querySnapshot.forEach((doc) => {
+			cur.push({
+				id: doc.id,
+				name: this.state.user.name,
+				text: doc.data().text,
+				timestamp: doc.data().timestamp,
+				avatar: require('../images/IILogo.png'),
+				// image: doc.data().image
+			});
+		});
+		this.setState({
+			loading: false,
+			posts: cur
+		});
+	}
+
+	renderPost = post => {
+		return (
+			<View style={styles.feedItem}>
+				<Avatar
+					size="medium"
+					rounded
+					style={styles.postavatar}
+					source={
+						this.state.user.avatar
+							? { uri: this.state.user.avatar }
+							: require("../assets/images/robot-dev.png")
+					}
+				/>
+				<View style={{ flex: 1 }}>
+					{/* <Text>{post.name}</Text> */}
+					<View
+						style={{
+							flexDirection: 'row',
+							justifyContent: 'space-between',
+							alignItems: 'center'
+						}}
+					>
+					</View>
+
+					<Text style={styles.post}>{post.text}</Text>
+				</View>
+			</View>
+		);
+	};
+
 
 	handlePickAvatar = async () => {
         UserPermissions.getCameraPermission();
@@ -73,14 +141,23 @@ export default class ProfileScreen extends React.Component {
 					<Text style={styles.text}>Token: 50</Text>
 
 				</View>
-				<Button style={{marginTop: 10}} title="Logout" onPress={() => {
+				{/* <Button style={{marginTop: 10}} title="Logout" onPress={() => {
 					Fire.shared.signOut();
 					this.props.navigation.popToTop();
-				}} />
+				}} /> */}
 
-				<View style={styles.bodyContent}>
+				{/* <View style={styles.bodyContent}>
 					<Text style={styles.text}>Users Posts</Text>
-				</View>
+				</View> */}
+				<View style={styles.bodyContent}>
+				<FlatList
+					style={styles.feed}
+					data={this.state.posts}
+					renderItem={({ item }) => this.renderPost(item)}
+					keyExtractor={item => item.id}
+					showsVerticalScrollIndicator={false}
+				/>
+			</View>
 
 			</View>
 
@@ -116,122 +193,46 @@ const styles = StyleSheet.create({
 	},
 	bodyContent: {
 		marginTop: 12,
-		borderColor: "black",
-		borderWidth: 2,
-		height: "53%",
+		// borderColor: "black",
+		// borderWidth: 2,
+		height: "59%",
+	},
+	feed: {
+		marginHorizontal: 16
+	},
+	feedItem: {
+		backgroundColor: 'whitesmoke',
+		borderRadius: 5,
+		padding: 8,
+		flexDirection: 'row',
+		marginVertical: 8
+	},
+	postavatar: {
+		width: 36,
+		height: 36,
+		borderRadius: 18,
+		marginRight: 16
+	},
+	name: {
+		fontSize: 15,
+		fontWeight: '500',
+		color: '#454d65'
+	},
+	timestamp: {
+		fontSize: 11,
+		color: '#c4c6ce',
+		marginTop: 4
+	},
+	post: {
+		marginTop: 3,
+		fontSize: 14,
+		color: 'black'
+	},
+	postImage: {
+		width: undefined,
+		height: 150,
+		borderRadius: 5,
+		marginVertical: 16
 	}
 
 });
-
-
-// if (!firebase.app.length) {
-//   firebase.initializeApp(config.firebaseConfig);
-// }
-
-// function ProfileScreen({ navigation }) {
-//   return (
-//     <View style={styles.container}>
-//       <View style={styles.header}> 
-//         <Image style={styles.avatar}
-//           source={{ uri: 'https://bootdey.com/img/Content/avatar/avatar6.png' }} />
-//       </View>
-//       <View style={styles.body}>
-//         {/* <View style={styles.bodyContent}> */}
-//           <Text style={styles.name}>John Doe </Text>
-//           <Text style={styles.userInfo}>UX Designer / Mobile developer</Text>
-//           <Text style={styles.userInfo}>jhonnydoe@mail.com </Text>
-//           <Text style={styles.userInfo}>50 Tokens</Text>
-//           <Button style={styles.button}
-// 			title="Logout" onPress={() => {
-// 				if (firebase.auth().signOut()) {
-// 					console.log("signed out!");
-// 					navigation.navigate("Login");
-// 				}
-// 			} } />
-//           {/* </View> */}
-//       </View>
-//     </View>
-
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: "whitesmoke"
-//   },
-//   header: {
-//     backgroundColor: "#a8d3da",
-//     height: 200
-//   },
-//   headerContent: {
-//     padding: 30,
-//     alignItems: 'center',
-//   },
-//   avatar: {
-//     width: 130,
-//     height: 130,
-//     borderRadius: 63,
-//     borderWidth: 4,
-//     borderColor: "white",
-//     marginBottom: 10,
-//     alignSelf: 'center',
-//     position: 'absolute',
-//     marginTop: 130
-//   },
-//   name: {
-//     fontSize: 22,
-//     color: "#000000",
-//     fontWeight: '600',
-//   },
-//   userInfo: {
-//     fontSize: 16,
-//     color: "black",
-//     fontWeight: '600',
-//   },
-
-//   body: {
-//     marginTop: 70,
-//     alignItems: 'center'
-//   },
-//   bodyContent: {
-//     flex: 1,
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//     padding: 30,
-//   },
-//   item: {
-//     flexDirection: 'row',
-//   },
-//   infoContent: {
-//     flex: 1,
-//     alignItems: 'flex-start',
-//     paddingLeft: 5
-//   },
-//   iconContent: {
-//     flex: 1,
-//     alignItems: 'flex-end',
-//     paddingRight: 5,
-//   },
-//   icon: {
-//     width: 30,
-//     height: 30,
-//     marginTop: 20,
-//   },
-//   info: {
-//     fontSize: 18,
-//     marginTop: 20,
-//     color: "#FFFFFF",
-//   },
-//   button: {
-//     borderRadius: 0,
-//     paddingTop: 20,
-//     paddingLeft: 40,
-//     paddingRight: 40,
-//     marginLeft: 0,
-//     marginRight: 0,
-//     marginBottom: 0
-//   }
-// });
-
-// export default ProfileScreen;

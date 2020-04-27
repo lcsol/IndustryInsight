@@ -72,7 +72,7 @@ export default class ChannelScreen extends React.Component {
               type="clear"
               buttonStyle={{ borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0 }}
               title='Microsoft Insight'
-              onPress={() => { this.props.navigation.navigate('Google') }}
+              onPress={() => { this.props.navigation.navigate('Microsoft') }}
             />
           </Card>
 
@@ -85,7 +85,7 @@ export default class ChannelScreen extends React.Component {
               type="clear"
               buttonStyle={{ borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0 }}
               title='Apple Insight'
-              onPress={() => { this.props.navigation.navigate('Google') }}
+              onPress={() => { this.props.navigation.navigate('Apple') }}
             />
           </Card>
 
@@ -97,7 +97,7 @@ export default class ChannelScreen extends React.Component {
               type="clear"
               buttonStyle={{ borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0 }}
               title='Intel Insight'
-              onPress={() => { this.props.navigation.navigate('Google') }}
+              onPress={() => { this.props.navigation.navigate('Intel') }}
             />
           </Card>
 

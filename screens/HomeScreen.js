@@ -8,7 +8,7 @@ import Fire from '../API/Fire'
 export default class HomeScreen extends React.Component {
 	constructor(props) {
 		super(props);
-		this.ref = firebase.firestore().collection('posts');
+		this.ref = firebase.firestore().collection('globalPosts');
 		this.unsubscribe = null;
 		this.state = {
 			user: {},
@@ -44,7 +44,7 @@ export default class HomeScreen extends React.Component {
 				name: this.state.user.name,
 				text: doc.data().text,
 				timestamp: doc.data().timestamp,
-				avatar: this.state.user.avatar,
+				avatar: require('../images/IILogo.png'),
 				// image: doc.data().image
 			});
 		});
@@ -68,7 +68,6 @@ export default class HomeScreen extends React.Component {
 							: require("../assets/images/robot-dev.png")
 					}
 				/>
-				{/* <Image source={post.avatar} style={styles.avatar} /> */}
 				<View style={{ flex: 1 }}>
 					{/* <Text>{post.name}</Text> */}
 					<View
@@ -81,16 +80,6 @@ export default class HomeScreen extends React.Component {
 					</View>
 
 					<Text style={styles.post}>{post.text}</Text>
-
-					{/* <Image
-            source={post.image}
-            style={styles.postImage}
-            resizeMode='cover'
-          /> */}
-
-					<View style={{ flexDirection: 'row' }}>
-						<Ionicons name='ios-chatboxes' size={24} color='#73788b' />
-					</View>
 				</View>
 			</View>
 		);
@@ -116,29 +105,11 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: '#413c69'
 	},
-	header: {
-		paddingTop: 64,
-		paddingBottom: 16,
-		backgroundColor: '#fff',
-		alignItems: 'center',
-		justifyContent: 'center',
-		borderBottomWidth: 1,
-		borderBottomColor: '#ebecf4',
-		shadowColor: '#454d65',
-		shadowOffset: { height: 5 },
-		shadowRadius: 15,
-		shadowOpacity: 0.2,
-		zIndex: 10
-	},
-	headerTitle: {
-		fontSize: 20,
-		fontWeight: '500'
-	},
 	feed: {
 		marginHorizontal: 16
 	},
 	feedItem: {
-		backgroundColor: '#fff',
+		backgroundColor: 'whitesmoke',
 		borderRadius: 5,
 		padding: 8,
 		flexDirection: 'row',
@@ -161,9 +132,9 @@ const styles = StyleSheet.create({
 		marginTop: 4
 	},
 	post: {
-		marginTop: 16,
+		marginTop: 3,
 		fontSize: 14,
-		color: '#838899'
+		color: 'black'
 	},
 	postImage: {
 		width: undefined,
