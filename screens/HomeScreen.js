@@ -19,10 +19,9 @@ export default class HomeScreen extends React.Component {
             cur.push({
                 id: doc.id,
                 name: 'Joe Green',
-                text: doc.data().text,
+                text: doc.data().description,
                 timestamp: doc.data().timestamp,
-                avatar: require('../assets/images/robot-dev.png'),
-                // image: doc.data().image
+                avatar: require('../assets/images/robot-dev.png')
             });            
         });
         this.setState({
@@ -48,18 +47,9 @@ export default class HomeScreen extends React.Component {
               alignItems: 'center'
             }}
           >
-      
-
           </View>
 
           <Text style={styles.post}>{post.text}</Text>
-
-          {/* <Image
-            source={post.image}
-            style={styles.postImage}
-            resizeMode='cover'
-          /> */}
-
           <View style={{ flexDirection: 'row' }}>
             <Ionicons name='ios-chatboxes' size={24} color='#73788b' />
           </View>

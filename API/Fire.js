@@ -33,7 +33,7 @@ class Fire {
     //   });
     // };
 
-    addPost = async ({ text }) => {
+    addPost = async ({ type, date, time, groupSize, location, description }) => {
         // const remoteUri = await this.uploadPhotoAsync(
         //   localUri,
         //   `photos/${this.uid}/${Date.now()}`
@@ -43,10 +43,14 @@ class Fire {
             this.firestore
                 .collection('posts')
                 .add({
-                    text,
+                    type,
+                    date,
+                    time,
+                    groupSize,
+                    location,
+                    description,
                     uid: this.uid,
-                    timestamp: this.timestamp,
-                    // image: remoteUri
+                    timestamp: this.timestamp
                 })
                 .then(ref => {
                     res(ref);

@@ -5,100 +5,133 @@ import {
     StyleSheet,
     TouchableOpacity,
     SafeAreaView,
-    TextInput,
-    Image,
-    Button
+    TextInput
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import Fire from '../API/Fire';
-import * as ImagePicker from 'expo-image-picker';
 import UserPermissions from '../utilities/UserPermissions';
+import DateTimePicker from '@react-native-community/datetimepicker';
+// import { Dropdown } from 'react-native-aterial-dropdown';
+import Accordian from '../components/Accordian';
+import Colors from '../constants/Colors';
 
 export default class PostScreen extends React.Component {
+    
     state = {
-        text: ''
-        // image: ''
+        type: '',
+        date: '',
+        time: '',
+        groupSize: '0',
+        location: '',
+        description: '',
+        typeData: [
+            {
+                title: 'Type', 
+                data: [
+                    {key: 'Mock Interview', value: false},
+                    {key: 'Project', value: false},
+                    {key: 'Others', value: false},
+                ]
+            },
+            { 
+                title: 'Date',
+                data: ''
+            },
+            { 
+               title: 'Time',
+               data: ''
+            },
+            {
+                title: 'Group Size',
+                data: [
+                    {key: '1', value: false},
+                    {key: '2', value: false},
+                    {key: '3', value: false},
+                    {key: '4', value: false},
+                    {key: '4+', value: false}
+                ]
+            },
+            {
+                title: 'Location',
+                data: ''
+            }
+        ]
     };
-
+    
+    
     componentDidMount() {
         UserPermissions.getCameraPermission();
     }
 
-    // handlePost = () => {
-    //   Fire.shared
-    //     .addPost({ text: this.state.text.trim(), localUri: this.state.image})
-    //     .then(ref => {
-    //       this.setState({ text: '', image: '' });
-    //       this.props.navigation.goBack();
-    //     })
-    //     .catch(error => {
-    //       alert(error);
-    //     });
-    // };
     handlePost = () => {
         Fire.shared
-            .addPost({ text: this.state.text.trim() })
+            .addPost({ 
+                type: this.state.type,
+                date: this.state.date,
+                time: this.state.time,
+                groupSize: this.state.groupSize,
+                location: this.state.location.trim(),
+                description: this.state.description.trim() 
+            })
             .then(ref => {
-                this.setState({ text: '' });
+                this.setState({ 
+                    type: '',
+                    date: '',
+                    time: '',
+                    groupSize: '',
+                    location: '',
+                    description: '' 
+                });
                 this.props.navigation.goBack();
             })
             .catch(error => {
                 alert(error);
             });
     };
-
-    pickImage = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
-            aspect: [4, 3]
-        });
-
-        if (!result.cancelled) {
-            this.setState({ image: result.uri });
+    renderAccordians=()=> {
+        const items = [];
+        for (let item of this.state.typeData) {
+            items.push(
+                <Accordian 
+                    title = {item.title}
+                    data = {item.data}
+                    update = {this.update}
+                />
+            );
         }
-    };
+        return items;
+    }
+    update=(item, cur)=> {
+        this.setState({
+            [item]: cur
+        })
+    }
 
     render() {
         return (
             <SafeAreaView style={styles.container}>
+                <View style={{backgroundColor: Colors.WHITE}}>
+                    {this.renderAccordians()}
+                </View>
                 <View style={styles.inputContainer}>
-                    <Image
-                        source={require('../assets/images/robot-dev.png')}
-                        style={styles.avatar}
-                    />
+                    <Text style = {styles.label}>Description</Text>
+                    <View style={styles.breaker}/>
                     <TextInput
                         autoFocus={true}
                         multiline={true}
                         numberOfLines={4}
-                        style={{ flex: 1 }}
-                        placeholder='Want to post something?'
-                        onChangeText={text => this.setState({ text })}
-                        value={this.state.text}
+                        style={{ flex: 1, margin: 5 }}
+                        placeholder='Please describe your activity'
+                        onChangeText={text => this.setState({ description: text })}
+                        value={this.state.description}
                     />
-                </View>
-                {/* <TouchableOpacity style={styles.photo} onPress={this.pickImage}>
-                    <Ionicons name='md-camera' size={32} color='#D8D9DB' />
-                </TouchableOpacity> */}
-                {/* <View style={{ marginHorizontal: 32, marginTop: 32, height: 150 }}>
-                    <Image
-                        source={{ uri: this.state.image }}
-                        style={{ width: '100%', height: '100%' }}
-                    />
-                </View> */}
-                <View style={styles.footer}>
-                    <TouchableOpacity onPress={this.handlePost.bind(this)}>
-                        <Text style={{ height: 100, fontWeight: "500", color: 'blue' }}>Post</Text>
-                    </TouchableOpacity>
                 </View>
                 <View>
-                    <Button
-                        buttonStyle={{backgroundColor:'red'}}
-                        // onPress={this.handlePost.bind(this)}
-                        title="Post"
-                        // color="#3b9fff"
-                        // accessibilityLabel="Learn more about this purple button"
-                    />
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={this.handlePost.bind(this)}
+                    >
+                        <Text style={styles.buttonText}>Post</Text>
+                    </TouchableOpacity>
                 </View>
                 
             </SafeAreaView>
@@ -109,7 +142,8 @@ export default class PostScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#413c69'
+        backgroundColor: Colors.BACKGRAY,
+        paddingTop: 30,
     },
     header: {
         flexDirection: 'row',
@@ -119,37 +153,54 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: '#D8D9DB'
     },
-    footer: {
-        flexDirection: 'row',
-        justifyContent: "center",
-        paddingHorizontal: 32,
-        paddingVertical: 12
-    },
+    // footer: {
+    //     flexDirection: 'row',
+    //     justifyContent: "center",
+    //     paddingHorizontal: 32,
+    //     paddingVertical: 12
+    // },
     inputContainer: {
         margin: 10,
         height: 200,
-        flexDirection: 'row',
-        backgroundColor: "whitesmoke"
+        // flexDirection: 'row',
+        backgroundColor: "white",
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.5,
+        shadowRadius: 1,
+        borderRadius:5
     },
-    avatar: {
-        width: 48,
-        height: 48,
-        borderRadius: 24,
-        marginRight: 16
+    // avatar: {
+    //     width: 48,
+    //     height: 48,
+    //     borderRadius: 24,
+    //     marginRight: 16
+    // },
+    // photo: {
+    //     alignItems: 'flex-end',
+    //     marginHorizontal: 32
+    // },
+    button: {
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        backgroundColor: '#ff5c5c',
+        padding: 10,
+        marginLeft: 10,
+        marginRight: 10,
+        borderRadius:5
     },
-    photo: {
-        alignItems: 'flex-end',
-        marginHorizontal: 32
+    buttonText: {
+        fontSize: 18,
+        color: 'white',
+        fontWeight: 'bold'
     },
-    Button:{
-        marginRight:40,
-        marginLeft:40,
-        marginTop:10,
-        paddingTop:10,
-        paddingBottom:10,
-        backgroundColor:'#3b9fff',
-        borderRadius:10,
-        borderWidth: 1,
-        borderColor: '#fff'
+    label: {
+        padding: 10,
+        fontWeight: 'bold'
+    },
+    breaker: {
+        margin: 5,
+        borderBottomColor: Colors.LIGHTGRAY,
+        borderBottomWidth: 1,
     }
 });
