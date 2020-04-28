@@ -36,15 +36,22 @@ export default class Accordian extends Component{
     }
     // change date or time
     onChange = (event, selectedDate) => {
-        const currentDate = selectedDate || this.state.date;
-        const currentTime = selectedDate || this.state.time;
-        this.setState({
-            show: (Platform.OS === 'ios'),
-            date: currentDate.toString().slice(0,15),
-            time: currentTime.toString().slice(16,21)
-        })
-        this.props.update('date', this.state.date)
-        this.props.update('time', this.state.time)
+        const currentDate = selectedDate.toString()
+        const cur = this.props.title == 'Date' ? currentDate.slice(0,15) : currentDate.slice(16,21)
+        if (this.props.title == 'Date') {
+            this.setState({
+                show: (Platform.OS === 'ios'),
+                date: cur
+            })
+            this.props.update('date', cur)
+        }
+        else {
+            this.setState({
+                show: (Platform.OS === 'ios'),
+                time: cur
+            })
+            this.props.update('time', cur)
+        }
     }
   
     showMode = (currentMode) => {
@@ -75,26 +82,12 @@ export default class Accordian extends Component{
                 </TouchableOpacity>
                 <View style={styles.parentHr}/>
                 {
-                    this.state.expanded && this.props.title == 'Date' &&
+                    this.state.expanded && (this.props.title == 'Date' || this.props.title == 'Time') &&
                     <View>
-                        <Button onPress={this.showDatepicker} title={this.state.date} />
-                        {
-                            this.state.show &&
-                            <DateTimePicker
-                                value={new Date()}
-                                mode={this.state.mode}
-                                is24Hour={true}
-                                display="default"
-                                onChange={this.onChange}
-                            />
-                        }
-                    </View>
-                }
-                
-                {
-                    this.state.expanded && this.props.title == 'Time' &&
-                    <View>
-                        <Button onPress={this.showTimepicker} title={this.state.time} />
+                        <Button 
+                            onPress={this.props.title == 'Date' ? this.showDatepicker : this.showTimepicker} 
+                            title={this.props.title == 'Date' ? this.state.date : this.state.time} 
+                        />
                         {
                             this.state.show &&
                             <DateTimePicker

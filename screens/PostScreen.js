@@ -9,8 +9,6 @@ import {
 } from 'react-native';
 import Fire from '../API/Fire';
 import UserPermissions from '../utilities/UserPermissions';
-import DateTimePicker from '@react-native-community/datetimepicker';
-// import { Dropdown } from 'react-native-aterial-dropdown';
 import Accordian from '../components/Accordian';
 import Colors from '../constants/Colors';
 
