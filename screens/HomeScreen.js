@@ -19,10 +19,9 @@ export default class HomeScreen extends React.Component {
             cur.push({
                 id: doc.id,
                 name: 'Joe Green',
-                text: doc.data().text,
+                text: doc.data().description,
                 timestamp: doc.data().timestamp,
-                avatar: require('../assets/tempAvatar.jpg'),
-                // image: doc.data().image
+                avatar: require('../assets/images/robot-dev.png')
             });            
         });
         this.setState({
@@ -48,31 +47,10 @@ export default class HomeScreen extends React.Component {
               alignItems: 'center'
             }}
           >
-            <View>
-              {/* <Text style={styles.name}>{post.name}</Text> */}
-              {/* <Text style={styles.timestamp}>
-                {moment(post.timestamp).fromNow()}
-              </Text> */}
-            </View>
-
-            <Ionicons name='ios-more' size={24} color='#73788b' />
           </View>
 
           <Text style={styles.post}>{post.text}</Text>
-
-          {/* <Image
-            source={post.image}
-            style={styles.postImage}
-            resizeMode='cover'
-          /> */}
-
           <View style={{ flexDirection: 'row' }}>
-            <Ionicons
-              name='ios-heart-empty'
-              size={24}
-              color='#73788b'
-              style={{ marginRight: 16 }}
-            />
             <Ionicons name='ios-chatboxes' size={24} color='#73788b' />
           </View>
         </View>
@@ -83,10 +61,6 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.headerTitle}>Feed</Text>
-        </View>
-
         <FlatList
           style={styles.feed}
           data={this.state.posts}
@@ -102,7 +76,7 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#efecf4'
+    backgroundColor: '#413c69'
   },
   header: {
     paddingTop: 64,
