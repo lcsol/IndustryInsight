@@ -74,7 +74,6 @@ export default class HomeScreen extends React.Component {
 							: require("../assets/images/robot-dev.png")
 					}
 				/>
-				{/* <Image source={post.avatar} style={styles.avatar} /> */}
 				<View style={{ flex: 1 }}>
 					{/* <Text>{post.name}</Text> */}
 					<View
@@ -86,10 +85,15 @@ export default class HomeScreen extends React.Component {
 					>
 					</View>
 
-					<Text style={styles.post}>{post.type}</Text>
-          <Text style={styles.post}>{post.date}</Text>
-          <Text style={styles.post}>{post.time}</Text>
-
+					<Text style={styles.postType}>{post.type}</Text>
+          <View style={styles.postTime}>
+            <Text style={styles.post}>Time: {post.date}</Text>
+            <Text style={styles.post}>  {post.time}</Text>
+          </View>
+          <View style={{paddingTop: 5}}>
+            <Text>Group Size: {post.groupSize}</Text>
+          </View>
+          
 					{/* <View style={{ flexDirection: 'row' }}>
 						<Ionicons name='ios-chatboxes' size={24} color='#73788b' />
 					</View> */}
@@ -120,29 +124,11 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: '#413c69'
 	},
-	header: {
-		paddingTop: 64,
-		paddingBottom: 16,
-		backgroundColor: '#fff',
-		alignItems: 'center',
-		justifyContent: 'center',
-		borderBottomWidth: 1,
-		borderBottomColor: '#ebecf4',
-		shadowColor: '#454d65',
-		shadowOffset: { height: 5 },
-		shadowRadius: 15,
-		shadowOpacity: 0.2,
-		zIndex: 10
-	},
-	headerTitle: {
-		fontSize: 20,
-		fontWeight: '500'
-	},
 	feed: {
 		marginHorizontal: 16
 	},
 	feedItem: {
-		backgroundColor: '#fff',
+		backgroundColor: 'whitesmoke',
 		borderRadius: 5,
 		padding: 8,
 		flexDirection: 'row',
@@ -164,11 +150,19 @@ const styles = StyleSheet.create({
 		color: '#c4c6ce',
 		marginTop: 4
 	},
-	post: {
-		marginTop: 16,
+	postType: {
+		marginTop: 3,
+		fontSize: 16,
+    color: 'black',
+    fontWeight: 'bold'
+  },
+  postTime: {
+		marginTop: 3,
 		fontSize: 14,
-		color: '#838899'
-	},
+    color: 'black',
+    flexDirection: 'row',
+    justifyContent: 'flex-start'
+  },
 	postImage: {
 		// width: undefined,
 		height: 150,

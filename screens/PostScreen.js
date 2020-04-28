@@ -74,6 +74,9 @@ export default class PostScreen extends React.Component {
     }
 
     handlePost = () => {
+        const screen = this.props.navigation.dangerouslyGetState();
+        const idx = screen['index'];
+        const prev_route = screen['routeNames'][idx];
         Fire.shared
             .addPost({ 
                 type: this.state.type,

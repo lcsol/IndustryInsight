@@ -6,15 +6,15 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default class Accordian extends Component{
     constructor(props) {
-        super(props);
-        this.state = { 
-          data: props.data,
-          expanded : false,
-          date: new Date().toString().slice(0,15),
-          time: new Date().toString().slice(16,21),
-          mode: 'date',
-          show: false
-        }
+      super(props);
+      this.state = { 
+        data: props.data,
+        expanded : false,
+        date: new Date().toString().slice(0,15),
+        time: new Date().toString().slice(16,21),
+        mode: 'date',
+        show: false
+      }
     }
     toggleExpand=()=>{
         this.setState({expanded : !this.state.expanded})
@@ -70,129 +70,126 @@ export default class Accordian extends Component{
     }
   
     render() {
-        return (
-            <View>
-                <TouchableOpacity style={styles.row} onPress={this.toggleExpand}>
-                    <Text style={styles.title}>{this.props.title}</Text>
-                    <Icon 
-                        name={this.state.expanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} 
-                        size={30}
-                        color={Colors.DARKGRAY} 
+    return (
+        <View>
+            <TouchableOpacity style={styles.row} onPress={this.toggleExpand}>
+                <Text style={styles.title}>{this.props.title}</Text>
+                <Icon 
+                name={this.state.expanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} 
+                size={30}
+                color={Colors.DARKGRAY} 
+                />
+            </TouchableOpacity>
+            <View style={styles.parentHr}/>
+            {
+                this.state.expanded && (this.props.title == 'Date' || this.props.title == 'Time') &&
+                <View>
+                    <Button 
+                    onPress={this.props.title == 'Date' ? this.showDatepicker : this.showTimepicker} 
+                    title={this.props.title == 'Date' ? this.state.date : this.state.time} 
                     />
-                </TouchableOpacity>
-                <View style={styles.parentHr}/>
-                {
-                    this.state.expanded && (this.props.title == 'Date' || this.props.title == 'Time') &&
-                    <View>
-                        <Button 
-                            onPress={this.props.title == 'Date' ? this.showDatepicker : this.showTimepicker} 
-                            title={this.props.title == 'Date' ? this.state.date : this.state.time} 
-                        />
-                        {
-                            this.state.show &&
-                            <DateTimePicker
-                                value={new Date()}
-                                mode={this.state.mode}
-                                is24Hour={true}
-                                display="default"
-                                onChange={this.onChange}
+                    {
+                    this.state.show &&
+                    <DateTimePicker
+                        value={new Date()}
+                        mode={this.state.mode}
+                        is24Hour={true}
+                        display="default"
+                        onChange={this.onChange}
+                    />
+                    }
+                </View>
+            }
+            {
+                this.state.expanded && (this.props.title == 'Type' || this.props.title == 'Group Size') &&
+                <View style={{}}>
+                    <FlatList
+                    data={this.state.data}
+                    numColumns={1}
+                    scrollEnabled={false}
+                    renderItem={({item, index}) => 
+                        <View>
+                        <TouchableOpacity style={item.value ? styles.itemActive : styles.item} onPress={()=>this.onClickList(index)}>
+                            <Icon 
+                            name={'check-circle'} 
+                            size={24} 
+                            color={ item.value ? Colors.GREEN : Colors.LIGHTGRAY} 
                             />
-                        }
-                    </View>
-                }
-                {
-                    this.state.expanded && (this.props.title == 'Type' || this.props.title == 'Group Size') &&
-                    <View style={{}}>
-                        <FlatList
-                        data={this.state.data}
-                        numColumns={1}
-                        scrollEnabled={false}
-                        renderItem={({item, index}) => 
-                            <View>
-                                <TouchableOpacity style={item.value ? styles.itemActive : styles.item} onPress={()=>this.onClickList(index)}>
-                                    <Icon 
-                                        name={'check-circle'} 
-                                        size={24} 
-                                        color={ item.value ? Colors.GREEN : Colors.LIGHTGRAY} 
-                                    />
-                                    <Text style={{paddingLeft: 30}}>{item.key}</Text>
-                                    
-                                </TouchableOpacity>
-                            </View>
-                        }/>
-                    </View>
-                }
-                {
-                    this.state.expanded && this.props.title == 'Location' &&
-                    <View style={styles.locContainer}>
-                        <TextInput
-                            autoFocus={true}
-                            multiline={true}
-                            numberOfLines={2}
-                            style={{ flex: 1, margin: 5 }}
-                            placeholder='Add the location of your activity'
-                            onChangeText={text => this.props.update('location', text)}
-                        />
-                    </View>
-                }
-            </View>
-        )
+                            <Text style={{paddingLeft: 30}}>{item.key}</Text>
+                        </TouchableOpacity>
+                        </View>
+                    }/>
+                </View>
+            }
+            {
+                this.state.expanded && this.props.title == 'Location' &&
+                <View style={styles.locContainer}>
+                    <TextInput
+                    autoFocus={true}
+                    multiline={true}
+                    numberOfLines={2}
+                    style={{ flex: 1, margin: 5 }}
+                    placeholder='Add the location of your activity'
+                    onChangeText={text => this.props.update('location', text)}
+                    />
+                </View>
+            }
+        </View>
+    )
     }
 }
 
 const styles = StyleSheet.create({
     container:{
-        justifyContent: 'center',
-        alignItems: 'center'
+      justifyContent: 'center',
+      alignItems: 'center'
     },
     item:{
-        width:'100%',
-        height:54,
-        alignItems:'center',
-        paddingLeft:35,
-        paddingRight:35,
-        fontSize: 12,
-        flexDirection: 'row',
-        justifyContent:'flex-start',
+      width:'100%',
+      height:54,
+      alignItems:'center',
+      paddingLeft:35,
+      paddingRight:35,
+      fontSize: 12,
+      flexDirection: 'row',
+      justifyContent:'flex-start',
     },
     itemActive:{
-        width:'100%',
-        height:54,
-        alignItems:'center',
-        paddingLeft:35,
-        paddingRight:35,
-        fontSize: 12,
-        flexDirection: 'row',
-        justifyContent:'flex-start',
-        backgroundColor: Colors.GRAY,
+      width:'100%',
+      height:54,
+      alignItems:'center',
+      paddingLeft:35,
+      paddingRight:35,
+      fontSize: 12,
+      flexDirection: 'row',
+      justifyContent:'flex-start',
+      backgroundColor: Colors.GRAY,
     },
     title:{
-        fontSize: 14,
-        fontWeight:'bold'
+      fontSize: 14,
+      fontWeight:'bold'
     },
     row:{
-        flexDirection: 'row',
-        justifyContent:'space-between',
-        height:60,
-        paddingLeft:25,
-        paddingRight:20,
-        alignItems:'center',
-        
+      flexDirection: 'row',
+      justifyContent:'space-between',
+      height:60,
+      paddingLeft:25,
+      paddingRight:20,
+      alignItems:'center' 
     },
     parentHr:{
-        height:1,
-        borderBottomColor: Colors.LIGHTGRAY,
-        borderBottomWidth: 1,
+      height:1,
+      borderBottomColor: Colors.LIGHTGRAY,
+      borderBottomWidth: 1,
     },
     locContainer: {
-        margin: 10,
-        height: 100,
-        backgroundColor: "white",
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.5,
-        shadowRadius: 1,
-        borderRadius:5
-    },
-    
+      margin: 10,
+      height: 100,
+      backgroundColor: "white",
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 1 },
+      shadowOpacity: 0.5,
+      shadowRadius: 1,
+      borderRadius:5
+    }
 });
