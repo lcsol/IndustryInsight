@@ -62,7 +62,8 @@ export default class DetailsScreen extends React.Component {
           </View>
           <View style={styles.sizeContainer}>
             <Text style={styles.info}>
-              <Text style={{ fontWeight: 'bold'}}>Group Size:  </Text>  {post.groupSize}
+              <Text style={{ fontWeight: 'bold'}}>Group Size:  </Text>  
+              <Text style={{fontWeight: 'bold', color:'red'}}>{post.groupSize}</Text>
             </Text>
           </View>
           <View style={styles.textContainer}>
@@ -71,9 +72,9 @@ export default class DetailsScreen extends React.Component {
           <View style={{marginTop:10}}>
             <TouchableOpacity
               style={styles.button}
-            //   onPress={this.handlePost.bind(this)}
+            //   onPress={}
             >
-              <Text style={styles.buttonText}>Join Activity</Text>
+              <Text style={styles.buttonText}>Join</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -99,12 +100,6 @@ const styles = StyleSheet.create({
 	  flexDirection: 'row',
       marginVertical: 8,
       justifyContent: 'center',
-    },
-    footer: {
-        // flexDirection: 'row',
-        // justifyContent: "center",
-        paddingHorizontal: 175,
-        // paddingVertical: 0
     },
     headContainer: {
       height: 200,

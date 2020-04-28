@@ -4,6 +4,7 @@ import Fire from '../API/Fire'
 import { Ionicons } from '@expo/vector-icons';
 import UserPermissions from '../utilities/UserPermissions';
 import * as ImagePicker from 'expo-image-picker'
+import * as firebase from 'firebase'
 
 export default class RegisterScreen extends React.Component {
     constructor(props) {
@@ -36,9 +37,11 @@ export default class RegisterScreen extends React.Component {
 
     // sends user data to firebase and saves it
     handleSignUp = async () => {
-        if(Fire.shared.createUser(this.state.user)) {
-            this.props.navigation.navigate('Login');
-        }
+    //   if(Fire.shared.createUser(this.state.user)) {
+    //     this.props.navigation.navigate('Login');
+    //   }
+      Fire.shared.createUser(this.state.user)
+      .then(() => this.props.navigation.navigate('Home'))
 
         // this.setState({ error: '', loading: true });
         // const { name, email, password } = this.state;

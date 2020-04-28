@@ -15,56 +15,65 @@ import Colors from '../constants/Colors';
 export default class PostScreen extends React.Component {
     
     state = {
-        type: '',
-        date: '',
-        time: '',
-        groupSize: '0',
-        location: '',
-        description: '',
-        typeData: [
-            {
-                title: 'Type', 
-                data: [
-                    {key: 'Mock Interview', value: false},
-                    {key: 'Project', value: false},
-                    {key: 'Others', value: false},
-                ]
-            },
-            { 
-                title: 'Date',
-                data: ''
-            },
-            { 
-               title: 'Time',
-               data: ''
-            },
-            {
-                title: 'Group Size',
-                data: [
-                    {key: '1', value: false},
-                    {key: '2', value: false},
-                    {key: '3', value: false},
-                    {key: '4', value: false},
-                    {key: '4+', value: false}
-                ]
-            },
-            {
-                title: 'Location',
-                data: ''
-            }
-        ]
+      type: '',
+      date: '',
+      time: '',
+      groupSize: '0',
+      location: '',
+      description: '',
+      user: {},
+      name: '',
+      email: '',
+      avatar: '',
+      active: false,
+      typeData: [
+        {
+          title: 'Type', 
+          data: [
+            {key: 'Mock Interview', value: false},
+            {key: 'Project', value: false},
+            {key: 'Others', value: false},
+          ]
+        },
+        { 
+          title: 'Date',
+          data: ''
+        },
+        { 
+          title: 'Time',
+          data: ''
+        },
+        {
+          title: 'Group Size',
+          data: [
+            {key: '1', value: false},
+            {key: '2', value: false},
+            {key: '3', value: false},
+            {key: '4', value: false},
+            {key: '4+', value: false}
+          ]
+        },
+        {
+          title: 'Location',
+          data: ''
+        }
+      ]
     };
-    
     
     componentDidMount() {
         // UserPermissions.getCameraPermission();
-        const user = this.props.uid || Fire.shared.uid;
-        this.data = Fire.shared.firestore
-			.collection('users')
-			.doc(user)
-			.onSnapshot(doc => {
-				this.setState({ user: doc.data() })
-			});
+      const user = this.props.uid || Fire.shared.uid;
+      this.data = Fire.shared.firestore
+		  .collection('users')
+		  .doc(user)
+		  .onSnapshot(doc => {
+			this.setState({ 
+              user: doc.data(),
+              name: doc.data().name,
+              email: doc.data().email,
+              avatar: doc.data().avatar
+            })
+		  });
     }
 
     componentWillUnmount() {
@@ -75,29 +84,36 @@ export default class PostScreen extends React.Component {
         // const screen = this.props.navigation.dangerouslyGetState();
         // const idx = screen['index'];
         // const prev_route = screen['routeNames'][idx];
-        Fire.shared
-            .addPost({ 
-                type: this.state.type,
-                date: this.state.date,
-                time: this.state.time,
-                groupSize: this.state.groupSize,
-                location: this.state.location.trim(),
-                description: this.state.description.trim() 
-            })
-            .then(ref => {
-                this.setState({ 
-                    type: '',
-                    date: '',
-                    time: '',
-                    groupSize: '',
-                    location: '',
-                    description: '' 
-                });
-                this.props.navigation.goBack();
-            })
-            .catch(error => {
-                alert(error);
+      const user = this.props.uid || Fire.shared.uid;
+      Fire.shared
+          .addPost({ 
+            type: this.state.type,
+            date: this.state.date,
+            time: this.state.time,
+            groupSize: this.state.groupSize,
+            location: this.state.location.trim(),
+            description: this.state.description.trim(),
+            name: this.state.name,
+            email: this.state.email,
+            avatar: this.state.avatar,
+            active: true
+          })
+          .then(ref => {
+            this.setState({ 
+              type: '',
+              date: '',
+              time: '',
+              groupSize: '',
+              location: '',
+              description: '',
+              name: '',
+              email: '',
+              avatar: '',
+              active: false
             });
+            this.props.navigation.goBack();
+          })
+          .catch(error => { alert(error) });
     };
     renderAccordians=()=> {
         const items = [];

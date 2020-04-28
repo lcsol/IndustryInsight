@@ -41,25 +41,26 @@ export default class HomeScreen extends React.Component {
 		let cur = [];
 		querySnapshot.forEach((doc) => {
 			cur.push({
-				id: doc.id,
-				name: this.state.user.name,
-				timestamp: doc.data().timestamp,
-        avatar: this.state.user.avatar,
+        id: doc.id,
+        timestamp: doc.data().timestamp,
+        name: doc.data().name,
+        email: doc.data().email,
+        avatar: doc.data().avatar,
         type: doc.data().type,
         date: doc.data().date,
         time: doc.data().time,
         groupSize: doc.data().groupSize,
         location: doc.data().location,
         description: doc.data().description,
+        active: doc.data().active
 			});
 		});
 		this.setState({
 			loading: false,
 			posts: cur
 		});
-	}
-
-
+  }
+  
 	renderPost = post => {
 		return (
 			<TouchableWithoutFeedback onPress={() => {this.props.navigation.navigate('Details', {post: post})}}>
@@ -69,9 +70,8 @@ export default class HomeScreen extends React.Component {
 					rounded
 					style={styles.avatar}
 					source={
-						this.state.user.avatar
-							? { uri: this.state.user.avatar }
-							: require("../assets/images/robot-dev.png")
+            post.avatar ? { uri: post.avatar }
+            : require("../assets/images/robot-dev.png")
 					}
 				/>
 				<View style={{ flex: 1 }}>

@@ -9,7 +9,7 @@ class Fire {
         }
     }
 
-    addPost = async ({ type, date, time, groupSize, location, description }) => {
+    addPost = async ({ type, date, time, groupSize, location, description, name, email, avatar, active }) => {
       return new Promise((res, rej) => {
         this.firestore
             .collection('posts')
@@ -20,15 +20,15 @@ class Fire {
               groupSize,
               location,
               description,
+              name,
+              email,
+              avatar,
+              active,
               uid: this.uid,
               timestamp: this.timestamp
             })
-            .then(ref => {
-              res(ref);
-            })
-            .catch(error => {
-              rej(error);
-            });
+            .then(ref => {res(ref)})
+            .catch(error => {rej(error)});
       });
     };
 
