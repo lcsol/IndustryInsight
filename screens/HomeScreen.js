@@ -62,7 +62,7 @@ export default class HomeScreen extends React.Component {
 
 	renderPost = post => {
 		return (
-			<TouchableWithoutFeedback onPress={() => {this.props.navigation.navigate('Details')}}>
+			<TouchableWithoutFeedback onPress={() => {this.props.navigation.navigate('Details', {post: post})}}>
 				<View style={styles.feedItem}>
 				<Avatar
 					size="medium"
@@ -75,28 +75,14 @@ export default class HomeScreen extends React.Component {
 					}
 				/>
 				<View style={{ flex: 1 }}>
-					{/* <Text>{post.name}</Text> */}
-					{/* <View
-						style={{
-							flexDirection: 'row',
-							justifyContent: 'space-between',
-							alignItems: 'center'
-						}}
-					>
-					</View> */}
-
 					<Text style={styles.postType}>{post.type}</Text>
           <View style={styles.postTime}>
-            <Text style={styles.post}>Time: {post.date}</Text>
-            <Text style={styles.post}>  {post.time}</Text>
+            <Text>Date: {post.date}</Text>
+            <Text>  Time: {post.time}</Text>
           </View>
           <View style={{paddingTop: 5}}>
             <Text>Group Size: {post.groupSize}</Text>
           </View>
-          
-					{/* <View style={{ flexDirection: 'row' }}>
-						<Ionicons name='ios-chatboxes' size={24} color='#73788b' />
-					</View> */}
 				</View>
 			</View>
 			</TouchableWithoutFeedback>
@@ -158,8 +144,6 @@ const styles = StyleSheet.create({
   },
   postTime: {
 		marginTop: 3,
-		fontSize: 14,
-    color: 'black',
     flexDirection: 'row',
     justifyContent: 'flex-start'
   },
