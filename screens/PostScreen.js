@@ -58,6 +58,19 @@ export default class PostScreen extends React.Component {
     
     componentDidMount() {
         UserPermissions.getCameraPermission();
+        const user = this.props.uid || Fire.shared.uid;
+
+        this.data = Fire.shared.firestore
+			.collection('users')
+			.doc(user)
+			.onSnapshot(doc => {
+				this.setState({ user: doc.data() })
+
+			});
+    }
+
+    componentWillUnmount() {
+        this.data();
     }
 
     handlePost = () => {
