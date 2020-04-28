@@ -9,85 +9,104 @@ class Fire {
         }
     }
 
-    // addPost = async ({ text, localUri }) => {
-    //   const remoteUri = await this.uploadPhotoAsync(
-    //     localUri,
-    //     `photos/${this.uid}/${Date.now()}`
-    //   );
-
-    //   return new Promise((res, rej) => {
-    //     this.firestore
-    //       .collection('posts')
-    //       .add({
-    //         text,
-    //         uid: this.uid,
-    //         timestamp: this.timestamp,
-    //         image: remoteUri
-    //       })
-    //       .then(ref => {
-    //         res(ref);
-    //       })
-    //       .catch(error => {
-    //         rej(error);
-    //       });
-    //   });
-    // };
-
     addPost = async ({ type, date, time, groupSize, location, description }) => {
-        // const remoteUri = await this.uploadPhotoAsync(
-        //     localUri,
-        //     `photos/${this.uid}/${Date.now()}`
-        // );
-        console.log(channel);
-        var post_collection = null;
-        return new Promise((res, rej) => {
-            switch (channel) {
-                case channel === "Amazon":
-                    // code block
-                    post_collection = "amazonPosts";
-                    break;
-                case "Facebook":
-                    // code block
-                    post_collection = "facebookPosts";
-                    break;
-                case "Google":
-                    // code block
-                    post_collection = "googlePosts";
-                    break;
-                case "Microsoft":
-                    post_collection = "microsoftPosts";
-                    break;
-                case "Intel":
-                    post_collection = "intelPosts";
-                    break;
-                case "Apple":
-                    post_collection = "applePosts";
-                    break;
-                default:
-                    post_collection = "globalPosts";
-                    break;
-
-            }
-            this.firestore
-                .collection(post_collection)
-                .add({
-                    type,
-                    date,
-                    time,
-                    groupSize,
-                    location,
-                    description,
-                    uid: this.uid,
-                    timestamp: this.timestamp
-                })
-                .then(ref => {
-                    res(ref);
-                })
-                .catch(error => {
-                    rej(error);
-                });
-        });
+      return new Promise((res, rej) => {
+        this.firestore
+            .collection('posts')
+            .add({
+              type,
+              date,
+              time,
+              groupSize,
+              location,
+              description,
+              uid: this.uid,
+              timestamp: this.timestamp
+            })
+            .then(ref => {
+              res(ref);
+            })
+            .catch(error => {
+              rej(error);
+            });
+      });
     };
+
+    addChannelPost = async ({title, text, channel}) => {
+      return new Promise((res, rej) => {
+        this.firestore
+            .collection('channelPosts')
+            .add({
+              title,
+              text,
+              channel,
+              uid: this.uid,
+              timestamp: this.timestamp
+            })
+            .then(ref => {
+              res(ref);
+            })
+            .catch(error => {
+              rej(error);
+            });
+      });
+    };
+
+    // addPost = async ({ type, date, time, groupSize, location, description }) => {
+    //     // const remoteUri = await this.uploadPhotoAsync(
+    //     //     localUri,
+    //     //     `photos/${this.uid}/${Date.now()}`
+    //     // );
+    //     console.log(channel);
+    //     var post_collection = null;
+    //     return new Promise((res, rej) => {
+    //         switch (channel) {
+    //             case channel === "Amazon":
+    //                 // code block
+    //                 post_collection = "amazonPosts";
+    //                 break;
+    //             case "Facebook":
+    //                 // code block
+    //                 post_collection = "facebookPosts";
+    //                 break;
+    //             case "Google":
+    //                 // code block
+    //                 post_collection = "googlePosts";
+    //                 break;
+    //             case "Microsoft":
+    //                 post_collection = "microsoftPosts";
+    //                 break;
+    //             case "Intel":
+    //                 post_collection = "intelPosts";
+    //                 break;
+    //             case "Apple":
+    //                 post_collection = "applePosts";
+    //                 break;
+    //             default:
+    //                 post_collection = "globalPosts";
+    //                 break;
+
+    //         }
+    //         this.firestore
+    //             .collection(post_collection)
+    //             .add({
+    //                 type,
+    //                 date,
+    //                 time,
+    //                 groupSize,
+    //                 location,
+    //                 description,
+    //                 uid: this.uid,
+    //                 timestamp: this.timestamp
+    //             })
+    //             .then(ref => {
+    //                 res(ref);
+    //             })
+    //             .catch(error => {
+    //                 rej(error);
+    //             });
+    //     });
+    // };
 
     uploadPhotoAsync = async (uri, filename) => {
         return new Promise(async (res, rej) => {

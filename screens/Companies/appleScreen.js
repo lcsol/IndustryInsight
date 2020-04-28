@@ -101,7 +101,7 @@ export default class AppleScreen extends React.Component {
                         disabledStyle={true}
                         title="Post Insights..."
                         color="#f194ff"
-                        onPress={() => this.props.navigation.navigate('PostScreen')}
+                        // onPress={() => this.props.navigation.navigate('PostScreen')}
                     />
                 </View>
                 <View>

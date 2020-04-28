@@ -8,13 +8,14 @@ import {
 import { Button, Avatar } from 'react-native-elements'
 import Fire from '../../API/Fire'
 import * as firebase from 'firebase'
+import ChannelPost from '../ChannelPost'
 
 
 
 export default class AmazonScreen extends React.Component {
     constructor(props) {
         super(props);
-        this.ref = firebase.firestore().collection('amazonPosts');
+        this.ref = firebase.firestore().collection('channelPosts');
         this.unsubscribe = null;
         this.state = {
             user: {},
@@ -41,55 +42,46 @@ export default class AmazonScreen extends React.Component {
 		this.data();
 	}
     onCollectionUpdate = (querySnapshot) => {
-		let cur = [];
-		querySnapshot.forEach((doc) => {
-			cur.push({
-				id: doc.id,
-				name: this.state.user.name,
-				text: doc.data().text,
-				timestamp: doc.data().timestamp,
-				avatar: require('../../images/IILogo.png'),
-				// image: doc.data().image
-			});
-		});
-		this.setState({
-			loading: false,
-			posts: cur
-		});
+	  let cur = [];
+	  querySnapshot.forEach((doc) => {
+		if (doc.data().channel == 'amazon') {
+		  cur.push({
+			id: doc.id,
+			name: this.state.user.name,
+			timestamp: doc.data().timestamp,
+		    avatar: require('../../images/IILogo.png'),
+			title: doc.data().title,
+			text: doc.data().text,
+			channel: doc.data().channel
+		  });
+		}	
+	  });
+	  this.setState({
+		loading: false,
+		posts: cur
+	  });
 	}
 
-
-
     renderPost = post => {
-		return (
-			<View style={styles.feedItem}>
-				<Avatar
-					size="medium"
-					rounded
-					style={styles.avatar}
-					source={
-						this.state.user.avatar
-							? { uri: this.state.user.avatar }
-							: require("../../assets/images/robot-dev.png")
-					}
-				/>
-				{/* <Image source={post.avatar} style={styles.avatar} /> */}
-				<View style={{ flex: 1 }}>
-					{/* <Text>{post.name}</Text> */}
-					<View
-						style={{
-							flexDirection: 'row',
-							justifyContent: 'space-between',
-							alignItems: 'center'
-						}}
-					>
-					</View>
-
-					<Text style={styles.post}>{post.text}</Text>
-
-
-				</View>
+	  return (
+	    <View style={styles.feedItem}>
+		  <Avatar
+			size="medium"
+			rounded
+			style={styles.avatar}
+			source={
+			  this.state.user.avatar
+			  ? { uri: this.state.user.avatar }
+			  : require("../../assets/images/robot-dev.png")
+			}
+		  />
+		  <View style={{ flex: 1 }}>
+		    <Text style={styles.postTitle}>{post.title}</Text>
+			<View style={{paddingTop: 5}}>
+			  <Text>{post.text}</Text>
 			</View>
+		  </View>
+		</View>
 		);
 	};
 
@@ -99,9 +91,9 @@ export default class AmazonScreen extends React.Component {
                 <View>
                     <Button
                         disabledStyle={true}
-                        title="Post Insights..."
+                        title="Create Post"
                         color="#f194ff"
-                        onPress={() => this.props.navigation.navigate('PostScreen')}
+                        onPress={() => this.props.navigation.navigate('ChannelPost', {channel: 'amazon'})}
                     />
                 </View>
                 <View>
@@ -153,7 +145,13 @@ const styles = StyleSheet.create({
 		height: 36,
 		borderRadius: 18,
 		marginRight: 16
-    },
+	},
+  postTitle: {
+	marginTop: 3,
+	fontSize: 16,
+    color: 'black',
+    fontWeight: 'bold'
+  },
     
 });
 

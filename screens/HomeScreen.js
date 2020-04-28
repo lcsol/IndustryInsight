@@ -76,14 +76,14 @@ export default class HomeScreen extends React.Component {
 				/>
 				<View style={{ flex: 1 }}>
 					{/* <Text>{post.name}</Text> */}
-					<View
+					{/* <View
 						style={{
 							flexDirection: 'row',
 							justifyContent: 'space-between',
 							alignItems: 'center'
 						}}
 					>
-					</View>
+					</View> */}
 
 					<Text style={styles.postType}>{post.type}</Text>
           <View style={styles.postTime}>

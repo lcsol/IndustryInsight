@@ -23,6 +23,7 @@ import DetailsScreen from "./screens/DetailsScreen";
 import MicrosoftScreen from './screens/Companies/microsoftScreen';
 import AppleScreen from './screens/Companies/appleScreen';
 import IntelScreen from './screens/Companies/intelScreen';
+import ChannelPost from './screens/ChannelPost'
 
 
 if (Platform.OS !== 'web') {
@@ -133,6 +134,7 @@ export default function App(navigation, props) {
             <Stack.Screen name="Microsoft" component={MicrosoftScreen} options={{headerTitle: 'Microsoft' }} />
             <Stack.Screen name="Apple" component={AppleScreen} options={{headerTitle: 'Apple' }} />
             <Stack.Screen name="Intel" component={IntelScreen} options={{headerTitle: 'Intel' }} />
+            <Stack.Screen name="ChannelPost" component={ChannelPost} options={{ headerTitle: 'Post' }} />
 
           </Stack.Navigator>
         </NavigationContainer>
