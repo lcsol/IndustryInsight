@@ -5,10 +5,6 @@ import { Ionicons } from '@expo/vector-icons';
 import UserPermissions from '../utilities/UserPermissions';
 import * as ImagePicker from 'expo-image-picker'
 
-
-
-
-
 export default class RegisterScreen extends React.Component {
     constructor(props) {
         super(props);

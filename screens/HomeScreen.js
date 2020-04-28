@@ -43,10 +43,14 @@ export default class HomeScreen extends React.Component {
 			cur.push({
 				id: doc.id,
 				name: this.state.user.name,
-				text: doc.data().text,
 				timestamp: doc.data().timestamp,
-				avatar: this.state.user.avatar,
-				// image: doc.data().image
+        avatar: this.state.user.avatar,
+        type: doc.data().type,
+        date: doc.data().date,
+        time: doc.data().time,
+        groupSize: doc.data().groupSize,
+        location: doc.data().location,
+        description: doc.data().description,
 			});
 		});
 		this.setState({
@@ -82,17 +86,13 @@ export default class HomeScreen extends React.Component {
 					>
 					</View>
 
-					<Text style={styles.post}>{post.text}</Text>
+					<Text style={styles.post}>{post.type}</Text>
+          <Text style={styles.post}>{post.date}</Text>
+          <Text style={styles.post}>{post.time}</Text>
 
-					{/* <Image
-            source={post.image}
-            style={styles.postImage}
-            resizeMode='cover'
-          /> */}
-
-					<View style={{ flexDirection: 'row' }}>
+					{/* <View style={{ flexDirection: 'row' }}>
 						<Ionicons name='ios-chatboxes' size={24} color='#73788b' />
-					</View>
+					</View> */}
 				</View>
 			</View>
 			</TouchableWithoutFeedback>
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
 		color: '#838899'
 	},
 	postImage: {
-		width: undefined,
+		// width: undefined,
 		height: 150,
 		borderRadius: 5,
 		marginVertical: 16

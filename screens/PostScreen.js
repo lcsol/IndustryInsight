@@ -156,14 +156,14 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.BACKGRAY,
         paddingTop: 30,
     },
-    header: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingHorizontal: 32,
-        paddingVertical: 12,
-        borderBottomWidth: 1,
-        borderBottomColor: '#D8D9DB'
-    },
+    // header: {
+    //     flexDirection: 'row',
+    //     justifyContent: 'space-between',
+    //     paddingHorizontal: 32,
+    //     paddingVertical: 12,
+    //     borderBottomWidth: 1,
+    //     borderBottomColor: '#D8D9DB'
+    // },
     // footer: {
     //     flexDirection: 'row',
     //     justifyContent: "center",
